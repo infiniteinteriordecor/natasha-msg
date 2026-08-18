@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="robots" content="noindex, nofollow">
-    <title>Date Invitation for Natasha</title>
+    <title>Natasha's Mood Interface</title>
     <style>
         :root {
-            --bg-color: #0f0f13;
-            --card-bg: #1c1c1e;
-            --primary: #ff2d55;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --primary: #ff4d6d;
             --text-main: #ffffff;
-            --text-muted: #8e8e93;
+            --text-muted: #a0a0a0;
             --apple-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
@@ -37,20 +37,20 @@
         .app-container {
             width: 100%;
             max-width: 400px;
-            height: 70vh;
             position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            height: 80vh;
         }
 
         .view {
             position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
             background: var(--card-bg);
-            border-radius: 28px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-            padding: 40px 20px;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -58,196 +58,160 @@
             text-align: center;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(20px);
+            transform: scale(0.95);
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .view.active {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
+            transform: scale(1);
         }
 
         h2 {
-            font-size: 28px;
-            margin-bottom: 12px;
+            font-size: 24px;
+            margin-bottom: 10px;
             font-weight: 700;
-            color: var(--text-main);
-            letter-spacing: -0.5px;
+            color: var(--primary);
         }
 
         p.subtitle {
             color: var(--text-muted);
-            font-size: 17px;
-            margin-bottom: 35px;
-            line-height: 1.4;
-        }
-
-        .btn-container {
-            display: flex;
-            gap: 15px;
-            width: 100%;
-            justify-content: center;
-            position: relative;
-            min-height: 60px;
-        }
-
-        .btn {
-            padding: 16px 32px;
-            border-radius: 20px;
-            font-size: 17px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
-        }
-
-        .btn-yes {
-            background-color: var(--primary);
-            color: white;
-            flex: 1;
-            max-width: 150px;
-            box-shadow: 0 8px 20px rgba(255, 45, 85, 0.3);
-        }
-
-        .btn-yes:active { transform: scale(0.95); }
-
-        .btn-no {
-            background-color: #3a3a3c;
-            color: var(--text-main);
-            flex: 1;
-            max-width: 150px;
-            position: relative;
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-            z-index: 10;
-        }
-
-        .input-group {
-            width: 100%;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .input-group label {
-            display: block;
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        input[type="date"], input[type="time"] {
-            width: 100%;
-            padding: 16px;
-            border-radius: 14px;
-            border: 1px solid #3a3a3c;
-            background-color: #2c2c2e;
-            color: var(--text-main);
             font-size: 16px;
-            font-family: var(--apple-font);
-            -webkit-appearance: none;
+            margin-bottom: 30px;
+            line-height: 1.5;
         }
 
-        .grid-2x2 {
+        .btn-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 12px;
             width: 100%;
         }
 
-        .grid-btn {
-            background: #2c2c2e;
-            border: 1px solid #3a3a3c;
+        .action-btn {
+            padding: 16px;
+            border: 1px solid #333;
             border-radius: 16px;
-            padding: 20px 10px;
-            color: var(--text-main);
+            background: #2a2a2a;
             font-size: 16px;
             font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 8px;
-            cursor: pointer;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .grid-btn span { font-size: 24px; }
-        .grid-btn:active { background: #3a3a3c; transform: scale(0.96); }
+        .action-btn:active {
+            transform: scale(0.96);
+            background: #3a3a3a;
+            border-color: var(--primary);
+        }
 
-        .action-btn {
-            width: 100%;
-            background-color: var(--primary);
-            color: white;
-            padding: 18px;
-            border-radius: 16px;
+        .highlight-btn {
+            background: rgba(255, 77, 109, 0.1);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .back-btn {
+            margin-top: 25px;
+            background: transparent;
             border: none;
-            font-size: 17px;
-            font-weight: 600;
-            margin-top: 15px;
+            color: var(--text-muted);
+            font-size: 14px;
+            text-decoration: underline;
             cursor: pointer;
         }
-        .action-btn:active { transform: scale(0.96); }
-
     </style>
 </head>
 <body>
 
-    <div class="app-container" id="boundary">
+    <div class="app-container">
         
-        <!-- STEP 1: The Ask -->
-        <div class="view active" id="view-ask">
-            <!-- INJECTED NATASHA'S NAME HERE -->
-            <h2>Hey Natasha ❤️</h2>
-            <p class="subtitle">I was wondering... would you like to go on a date with me?</p>
-            <div class="btn-container">
-                <button class="btn btn-yes" onclick="navigate('view-datetime')">Yes!</button>
-                <button class="btn btn-no" id="btn-no">No</button>
+        <!-- ROOT STATE: Mood Selection -->
+        <div class="view active" id="view-home">
+            <h2>Current Status?</h2>
+            <p class="subtitle">System needs to know how Natasha is feeling right now to initiate the correct protocol.</p>
+            <div class="btn-grid">
+                <button class="action-btn" onclick="navigate('view-happy')">😊 Happy</button>
+                <button class="action-btn" onclick="navigate('view-sad')">🥺 Sad</button>
+                <button class="action-btn" onclick="navigate('view-angry')">😡 Angry</button>
+                <button class="action-btn highlight-btn" onclick="navigate('view-romantic')">😏 Romantic</button>
             </div>
         </div>
 
-        <!-- STEP 2: Date & Time Selection -->
-        <div class="view" id="view-datetime">
-            <h2>Set the Schedule</h2>
-            <p class="subtitle">When are you free for this date?</p>
-            
-            <div class="input-group">
-                <label>Select Date</label>
-                <input type="date" id="dateInput" required>
+        <!-- BRANCH: Happy -->
+        <div class="view" id="view-happy">
+            <h2>Joy Detected</h2>
+            <p class="subtitle">Excellent. How should we amplify this energy?</p>
+            <div class="btn-grid">
+                <button class="action-btn" onclick="finalize('A fun date night')">Go on a Date</button>
+                <button class="action-btn" onclick="finalize('Dancing together')">Dance Party</button>
+                <button class="action-btn" onclick="finalize('Eating good food')">Eat Something Tasty</button>
             </div>
-            <div class="input-group">
-                <label>Select Time</label>
-                <input type="time" id="timeInput" required>
-            </div>
-            
-            <button class="action-btn" onclick="validateDateTime()">Next Step</button>
+            <button class="back-btn" onclick="navigate('view-home')">Go Back</button>
         </div>
 
-        <!-- STEP 3: Vibe/Venue Selection -->
-        <div class="view" id="view-vibe">
-            <h2>Select the Vibe</h2>
-            <p class="subtitle">What kind of date are we going on?</p>
-            
-            <div class="grid-2x2">
-                <button class="grid-btn" onclick="setVibe('Cozy Cafe ☕')">
-                    <span>☕</span> Cafe
-                </button>
-                <button class="grid-btn" onclick="setVibe('Fancy Restaurant 🍷')">
-                    <span>🍷</span> Restaurant
-                </button>
-                <button class="grid-btn" onclick="setVibe('Clubbing & Drinks 🪩')">
-                    <span>🪩</span> Club
-                </button>
-                <button class="grid-btn" onclick="setVibe('Late Night Long Drive 🚗')">
-                    <span>🚗</span> Long Drive
-                </button>
+        <!-- BRANCH: Sad -->
+        <div class="view" id="view-sad">
+            <h2>Warning: Low Morale</h2>
+            <p class="subtitle">Initiating comfort protocols. What do you need most?</p>
+            <div class="btn-grid">
+                <button class="action-btn" onclick="finalize('Tight Hugs')">Tight Hugs</button>
+                <button class="action-btn" onclick="finalize('Ice Cream & Snacks')">Ice Cream</button>
+                <button class="action-btn" onclick="finalize('Just listening to you')">Listen to me vent</button>
             </div>
+            <button class="back-btn" onclick="navigate('view-home')">Go Back</button>
         </div>
 
-        <!-- STEP 4: WhatsApp Payload Execution -->
+        <!-- BRANCH: Angry -->
+        <div class="view" id="view-angry">
+            <h2>Danger: Threat Level High</h2>
+            <p class="subtitle">Carefully assessing the situation. How can I survive this?</p>
+            <div class="btn-grid">
+                <button class="action-btn" onclick="finalize('Instant Apology')">Apologize instantly</button>
+                <button class="action-btn" onclick="finalize('Giving you space')">Give me some space</button>
+                <button class="action-btn" onclick="finalize('Bringing you food')">Bring me food</button>
+            </div>
+            <button class="back-btn" onclick="navigate('view-home')">Go Back</button>
+        </div>
+
+        <!-- BRANCH: Romantic -->
+        <div class="view" id="view-romantic">
+            <h2>Ah, Excellent Choice.</h2>
+            <p class="subtitle">Target locked. Select your preferred method of engagement.</p>
+            <div class="btn-grid">
+                <button class="action-btn" onclick="finalize('Cuddling')">Cuddles</button>
+                <button class="action-btn" onclick="finalize('Romantic setup')">Pure Romance</button>
+                <button class="action-btn" onclick="finalize('Lots of Kisses')">Just Kisses</button>
+                <button class="action-btn highlight-btn" onclick="navigate('view-sex')">🔥 Take it further (Sex)</button>
+            </div>
+            <button class="back-btn" onclick="navigate('view-home')">Go Back</button>
+        </div>
+
+        <!-- SUB-BRANCH: Sex -->
+        <div class="view" id="view-sex">
+            <h2>Restricted Access Granted</h2>
+            <p class="subtitle">Let's make things interesting. What's on the menu for tonight?</p>
+            <div class="btn-grid">
+                <button class="action-btn" onclick="finalize('Oral execution')">👅 Oral</button>
+                <button class="action-btn" onclick="finalize('Doggy Style protocol')">🐕 Doggy Style</button>
+                <button class="action-btn" onclick="finalize('Mode 69')">🔄 69</button>
+                <button class="action-btn highlight-btn" onclick="finalize('Roleplay / Total Surprise')">🎲 Surprise Me!</button>
+            </div>
+            <button class="back-btn" onclick="navigate('view-romantic')">Go Back</button>
+        </div>
+
+        <!-- FINAL PAYLOAD -->
         <div class="view" id="view-final">
-            <!-- INJECTED NATASHA'S NAME HERE -->
-            <h2>It's a Date, Natasha! 🎉</h2>
-            <p class="subtitle">Your reservation has been confirmed locally. Transmit the data to your boyfriend to finalize.</p>
-            <button class="action-btn" onclick="sendToWhatsApp()">Notify on WhatsApp 📲</button>
+            <h2>Request Locked In.</h2>
+            <p class="subtitle" id="final-msg" style="color: var(--primary); font-size: 18px; font-weight: 600;"></p>
+            <p class="subtitle" style="margin-top: 20px;">Your designated boyfriend has been notified. Click below to transmit the final coordinates.</p>
+            <button class="action-btn highlight-btn" id="final-btn" style="width: 100%; margin-top: 20px;">Notify Boyfriend on WhatsApp 📲</button>
         </div>
 
     </div>
@@ -255,73 +219,42 @@
     <script>
         'use strict';
 
-        const dateData = {
-            date: '',
-            time: '',
-            vibe: ''
-        };
-
+        // DOM Router Core
         function navigate(targetId) {
-            document.querySelectorAll('.view').forEach(view => {
+            const views = document.querySelectorAll('.view');
+            views.forEach(view => {
                 view.classList.remove('active');
             });
-            document.getElementById(targetId).classList.add('active');
-        }
-
-        const btnNo = document.getElementById('btn-no');
-        const boundary = document.getElementById('boundary');
-
-        function moveButton(e) {
-            if(e) e.preventDefault(); 
             
-            const maxOffsetX = 100; 
-            const maxOffsetY = 150; 
-
-            const randomX = (Math.random() * (maxOffsetX * 2)) - maxOffsetX;
-            const randomY = (Math.random() * (maxOffsetY * 2)) - maxOffsetY;
-
-            btnNo.style.transform = `translate(${randomX}px, ${randomY}px)`;
-        }
-
-        btnNo.addEventListener('mouseover', moveButton);
-        btnNo.addEventListener('touchstart', moveButton, { passive: false });
-        btnNo.addEventListener('click', moveButton); 
-
-
-        function validateDateTime() {
-            const d = document.getElementById('dateInput').value;
-            const t = document.getElementById('timeInput').value;
-            
-            if (!d || !t) {
-                alert("Please select both a date and a time!");
-                return;
+            const targetView = document.getElementById(targetId);
+            if(targetView) {
+                targetView.classList.add('active');
             }
-            
-            const dateObj = new Date(d);
-            const formattedDate = dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-
-            dateData.date = formattedDate;
-            dateData.time = t;
-            
-            navigate('view-vibe');
         }
 
-        function setVibe(selectedVibe) {
-            dateData.vibe = selectedVibe;
+        // Finalize Selection and Output Data
+        function finalize(choiceText) {
+            const finalMsg = document.getElementById('final-msg');
+            finalMsg.textContent = `Selected Protocol: [ ${choiceText} ]`;
+            
+            // WHATSAPP INTEGRATION ENGINE
+            // Indian country code (91) is appended directly to the provided number
+            const myPhoneNumber = "916398038550"; 
+            
+            // Dynamic message creation
+            const customMessage = `Hey babe! My mood protocol is locked in: *${choiceText}*. You better be ready! 😏🔥`;
+            const encodedMessage = encodeURIComponent(customMessage);
+            const waUrl = `https://wa.me/${myPhoneNumber}?text=${encodedMessage}`;
+            
+            // Hijack the final button to open WhatsApp
+            const finalBtn = document.getElementById('final-btn');
+            finalBtn.onclick = function() {
+                window.location.href = waUrl;
+            };
+
             navigate('view-final');
-        }
-
-        function sendToWhatsApp() {
-            const targetPhone = "916398038550"; 
-            
-            // INJECTED NATASHA'S NAME INTO THE PAYLOAD
-            const message = `Hey babe! It's Natasha, and it's a YES for the date! ❤️\n\n📅 Date: *${dateData.date}*\n⏰ Time: *${dateData.time}*\n📍 Vibe: *${dateData.vibe}*\n\nCan't wait! 😘`;
-            
-            const encodedMessage = encodeURIComponent(message);
-            const waUrl = `https://wa.me/${targetPhone}?text=${encodedMessage}`;
-            
-            window.location.href = waUrl;
         }
     </script>
 </body>
 </html>
+
