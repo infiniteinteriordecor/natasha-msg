@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>For Natasha</title>
+    <style>
+        :root {
+            --primary-color: #ff4d6d;
+            --bg-gradient: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+            --text-main: #333333;
+            --apple-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--apple-font);
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 28px;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            max-width: 320px;
+            width: 85%;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .photo-container {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px auto;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        h1 {
+            color: var(--primary-color);
+            font-size: 26px;
+            margin: 0 0 12px 0;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        p {
+            color: var(--text-main);
+            font-size: 17px;
+            line-height: 1.4;
+            margin: 0 0 20px 0;
+            display: none; 
+            font-weight: 500;
+        }
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 40px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            -webkit-tap-highlight-color: transparent;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+        }
+        .btn:active {
+            transform: scale(0.94);
+        }
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        .heart {
+            display: inline-block;
+            color: var(--primary-color);
+            animation: heartbeat 1.2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="mainCard">
+        <div class="photo-container">
+            <!-- Image loaded from the same folder -->
+            <img src="bella_and_biba.png" alt="Bella and Biba" id="displayImage">
+        </div>
+        <h1>Hey Natasha <span class="heart">❤️</span></h1>
+        <button class="btn" id="revealBtn">Tap to Open</button>
+        <p id="secretMsg">
+            Just a small piece of code to show how much you mean to me. Bella, Biba, and I think you're the absolute best! Keep smiling! ✨🐶🐶
+        </p>
+    </div>
+
+    <script>
+        'use strict';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const card = document.getElementById('mainCard');
+            const btn = document.getElementById('revealBtn');
+            const msg = document.getElementById('secretMsg');
+            
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, 150);
+            });
+
+            btn.addEventListener('click', () => {
+                btn.style.display = 'none';
+                msg.style.display = 'block';
+                
+                msg.animate([
+                    { opacity: 0, transform: 'translateY(15px)' },
+                    { opacity: 1, transform: 'translateY(0)' }
+                ], {
+                    duration: 500,
+                    easing: 'ease-out',
+                    fill: 'forwards'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
