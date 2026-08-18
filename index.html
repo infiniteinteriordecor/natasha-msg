@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <!-- PRIVACY LOCK: Prevents search engines from indexing explicit content -->
     <meta name="robots" content="noindex, nofollow">
     <title>Natasha's Mood Interface</title>
     <style>
@@ -211,8 +210,8 @@
         <div class="view" id="view-final">
             <h2>Request Locked In.</h2>
             <p class="subtitle" id="final-msg" style="color: var(--primary); font-size: 18px; font-weight: 600;"></p>
-            <p class="subtitle" style="margin-top: 20px;">Your designated boyfriend has been notified and is currently preparing for immediate execution of your request. Prepare yourself.</p>
-            <button class="action-btn highlight-btn" style="width: 100%; margin-top: 20px;" onclick="navigate('view-home')">Restart System</button>
+            <p class="subtitle" style="margin-top: 20px;">Your designated boyfriend has been notified. Click below to transmit the final coordinates.</p>
+            <button class="action-btn highlight-btn" id="final-btn" style="width: 100%; margin-top: 20px;">Notify Boyfriend on WhatsApp 📲</button>
         </div>
 
     </div>
@@ -237,8 +236,25 @@
         function finalize(choiceText) {
             const finalMsg = document.getElementById('final-msg');
             finalMsg.textContent = `Selected Protocol: [ ${choiceText} ]`;
+            
+            // WHATSAPP INTEGRATION ENGINE
+            // Indian country code (91) is appended directly to the provided number
+            const myPhoneNumber = "916398038550"; 
+            
+            // Dynamic message creation
+            const customMessage = `Hey babe! My mood protocol is locked in: *${choiceText}*. You better be ready! 😏🔥`;
+            const encodedMessage = encodeURIComponent(customMessage);
+            const waUrl = `https://wa.me/${myPhoneNumber}?text=${encodedMessage}`;
+            
+            // Hijack the final button to open WhatsApp
+            const finalBtn = document.getElementById('final-btn');
+            finalBtn.onclick = function() {
+                window.location.href = waUrl;
+            };
+
             navigate('view-final');
         }
     </script>
 </body>
 </html>
+
