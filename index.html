@@ -7,7 +7,9 @@
     <title>Natasha's Comfort Kit 🌸</title>
     <style>
         :root {
-            --bg-gradient: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+            /* Dynamic background variables updated via JS */
+            --bg-color-1: #fdfbfb;
+            --bg-color-2: #ebedee;
             --card-bg: rgba(255, 255, 255, 0.9);
             --primary: #ff758c;
             --primary-light: #ff7eb3;
@@ -25,7 +27,7 @@
 
         body {
             font-family: var(--apple-font);
-            background: var(--bg-gradient);
+            background: linear-gradient(135deg, var(--bg-color-1) 0%, var(--bg-color-2) 100%);
             color: var(--text-main);
             min-height: 100vh;
             padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom) 20px;
@@ -33,24 +35,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            transition: background 0.5s ease;
         }
 
-        .header {
-            text-align: center;
-            margin: 25px 0 15px 0;
-        }
-
-        .header h1 {
-            font-size: 26px;
-            color: var(--primary);
-            margin-bottom: 6px;
-        }
-
-        .header p {
-            color: var(--text-muted);
-            font-size: 14px;
-            line-height: 1.4;
-        }
+        .header { text-align: center; margin: 25px 0 15px 0; }
+        .header h1 { font-size: 26px; color: var(--text-main); margin-bottom: 6px; transition: color 0.3s; }
+        .header p { color: var(--text-muted); font-size: 14px; line-height: 1.4; }
 
         .card {
             background: var(--card-bg);
@@ -63,267 +53,164 @@
             margin-bottom: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             border: 1px solid rgba(255,255,255,0.4);
+            transition: transform 0.3s;
         }
 
-        h2 {
-            font-size: 17px;
-            margin-bottom: 12px;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        h2 { font-size: 17px; margin-bottom: 12px; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+
+        /* --- Cramp Slider --- */
+        .slider-container { width: 100%; text-align: center; margin-top: 10px; }
+        input[type=range] {
+            -webkit-appearance: none; width: 100%; margin: 15px 0; background: transparent;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%; height: 8px; cursor: pointer; background: #ddd; border-radius: 8px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            height: 24px; width: 24px; border-radius: 50%; background: var(--primary); cursor: pointer;
+            -webkit-appearance: none; margin-top: -8px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
-        /* Module 1: Bubble Wrap */
-        .bubble-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            margin-top: 10px;
-        }
+        /* --- Bubble Wrap --- */
+        .bubble-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 10px; }
         .bubble {
-            aspect-ratio: 1;
-            border-radius: 50%;
+            aspect-ratio: 1; border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255, 117, 140, 0.3));
             box-shadow: inset -2px -2px 6px rgba(0,0,0,0.1), 2px 2px 5px rgba(0,0,0,0.05);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px;
         }
         .bubble.popped {
-            background: rgba(255, 117, 140, 0.1);
-            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1);
-            transform: scale(0.9);
-            color: transparent;
-            pointer-events: none;
+            background: rgba(255, 117, 140, 0.1); box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1);
+            transform: scale(0.9); color: transparent; pointer-events: none;
         }
-        .bubble.popped::after {
-            content: "✨";
-            color: var(--primary);
-        }
+        .bubble.popped::after { content: "💥"; color: var(--primary); }
 
-        /* Module 2: Dogs */
-        .dog-container {
-            position: relative;
-            width: 100%;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-        }
-        .dog-container img {
-            width: 100%;
-            display: block;
-            cursor: pointer;
-        }
-        .dog-msg {
-            text-align: center;
-            margin-top: 12px;
-            font-weight: 500;
-            color: var(--primary);
-            min-height: 40px;
-            font-style: italic;
-            font-size: 14px;
-        }
+        /* --- Dogs --- */
+        .dog-container { border-radius: 16px; overflow: hidden; position: relative; }
+        .dog-container img { width: 100%; display: block; cursor: pointer; }
+        .dog-msg { text-align: center; margin-top: 12px; font-weight: 500; color: var(--primary); font-style: italic; font-size: 14px; min-height: 20px;}
 
-        /* Module 3: Advanced Full-Body Rage Room */
-        .weapon-selector {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-            justify-content: center;
-        }
+        /* --- Rage Room --- */
+        .weapon-selector { display: flex; gap: 6px; margin-bottom: 15px; justify-content: center; flex-wrap: wrap;}
         .weapon-btn {
-            background: #f1f3f5;
-            border: 2px solid #dee2e6;
-            padding: 8px 12px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
+            background: #f1f3f5; border: 2px solid #dee2e6; padding: 8px 10px; border-radius: 12px;
+            font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
         }
-        .weapon-btn.active {
-            background: #fff0f3;
-            border-color: var(--primary);
-            color: var(--primary);
-        }
+        .weapon-btn.active { background: #fff0f3; border-color: var(--primary); color: var(--primary); }
 
         .punch-arena {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            background: #f8f9fa;
-            border-radius: 16px;
-            padding: 15px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: relative; background: #f8f9fa; border-radius: 16px; padding: 15px; overflow: hidden;
         }
 
         .avatar-container {
-            width: 180px;
-            height: 260px;
-            cursor: pointer;
-            position: relative;
-            user-select: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 180px; height: 260px; cursor: pointer; position: relative; user-select: none;
+            display: flex; justify-content: center; align-items: center;
+            transition: transform 0.1s ease-out;
         }
 
-        @keyframes shakeHit {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            20% { transform: translate(-8px, 6px) rotate(-8deg); }
-            40% { transform: translate(8px, -6px) rotate(8deg); }
-            60% { transform: translate(-6px, -4px) rotate(-4deg); }
-            80% { transform: translate(6px, 4px) rotate(4deg); }
-            100% { transform: translate(0, 0) rotate(0deg); }
+        /* Dynamic Weapon Physics Animations */
+        @keyframes animFist { 0%, 100% {transform: translate(0,0);} 25% {transform: translate(-10px, 5px);} 75% {transform: translate(10px, -5px);} }
+        @keyframes animChappal { 0%, 100% {transform: rotate(0deg);} 30% {transform: rotate(-15deg) translateX(-10px);} 70% {transform: rotate(15deg) translateX(10px);} }
+        @keyframes animPillow { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.1, 0.8);} }
+        @keyframes animBat { 0%, 100% {transform: translateX(0) rotate(0);} 50% {transform: translateX(25px) rotate(10deg);} }
+        
+        .hit-fist { animation: animFist 0.3s ease-in-out; }
+        .hit-chappal { animation: animChappal 0.4s ease-in-out; }
+        .hit-pillow { animation: animPillow 0.3s ease-in-out; }
+        .hit-bat { animation: animBat 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+        /* The flying weapon emoji that spawns on tap */
+        .strike-emoji {
+            position: absolute; font-size: 40px; pointer-events: none; z-index: 30;
+            animation: strikeEffect 0.5s ease-out forwards; text-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .is-hit {
-            animation: shakeHit 0.3s ease-in-out;
+        @keyframes strikeEffect {
+            0% { transform: scale(2) rotate(-20deg); opacity: 1; }
+            100% { transform: scale(1) rotate(20deg) translateY(-50px); opacity: 0; }
         }
 
         .hit-popup {
-            position: absolute;
-            font-size: 28px;
-            font-weight: 900;
-            color: #ff3b30;
-            text-shadow: 2px 2px 0 #fff;
-            pointer-events: none;
-            opacity: 0;
-            z-index: 20;
+            position: absolute; font-size: 26px; font-weight: 900; color: #ff3b30;
+            text-shadow: 2px 2px 0 #fff, -1px -1px 0 #000; pointer-events: none; opacity: 0; z-index: 20;
         }
-        @keyframes popUpEffect {
-            0% { transform: scale(0.5) translateY(0); opacity: 1; }
-            100% { transform: scale(1.5) translateY(-40px); opacity: 0; }
-        }
+        @keyframes popUpEffect { 0% { transform: scale(0.5) translateY(0); opacity: 1; } 100% { transform: scale(1.5) translateY(-40px); opacity: 0; } }
 
-        .rage-stats {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 10px;
-            font-weight: 600;
-        }
+        .rage-stats { display: flex; justify-content: space-between; width: 100%; font-size: 12px; color: var(--text-muted); margin-top: 10px; font-weight: 600; }
+        .ayaan-msg { margin-top: 10px; font-weight: 700; color: #ff3b30; min-height: 35px; text-align: center; font-size: 14px; }
 
-        .ayaan-msg {
-            margin-top: 10px;
-            font-weight: 700;
-            color: #ff3b30;
-            height: 24px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        /* Module 4: SOS */
-        .sos-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
+        /* --- SOS Module --- */
+        .sos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .sos-btn {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            padding: 10px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-main);
-            cursor: pointer;
-            transition: all 0.2s;
+            background: #f8f9fa; border: 2px solid #e9ecef; padding: 10px; border-radius: 12px;
+            font-size: 13px; font-weight: 600; color: var(--text-main); cursor: pointer; transition: all 0.2s;
         }
-        .sos-btn.selected {
-            background: #fff0f3;
-            border-color: var(--primary);
-            color: var(--primary);
-        }
+        .sos-btn.selected { background: #fff0f3; border-color: var(--primary); color: var(--primary); }
         .action-btn {
-            width: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            padding: 15px;
-            border-radius: 14px;
-            border: none;
-            font-size: 15px;
-            font-weight: 700;
-            margin-top: 15px;
-            cursor: pointer;
-            box-shadow: 0 6px 15px rgba(255, 117, 140, 0.3);
+            width: 100%; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white; padding: 15px; border-radius: 14px; border: none; font-size: 15px; font-weight: 700;
+            margin-top: 15px; cursor: pointer; box-shadow: 0 6px 15px rgba(255, 117, 140, 0.3);
         }
         .action-btn:active { transform: scale(0.96); }
-
-        .floating-emoji {
-            position: absolute;
-            pointer-events: none;
-            font-size: 22px;
-            animation: floatUp 1.5s ease-out forwards;
-            z-index: 10;
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(0.8); opacity: 1; }
-            100% { transform: translateY(-70px) scale(1.2); opacity: 0; }
-        }
     </style>
 </head>
 <body>
 
-    <div class="header">
+    <div class="header" id="mainHeader">
         <h1>Morning, Natasha 🌸</h1>
-        <p>Cramps hurting? Let out all your frustration right here.</p>
+        <p>Your personal healing & rage center.</p>
     </div>
 
-    <!-- MODULE 1: Bubble Wrap -->
+    <!-- MODULE 1: CRAMP TRACKER -->
     <div class="card">
-        <h2>🫧 Pop The Pain Away</h2>
-        <p style="font-size: 12px; color: var(--text-muted);">Tap the bubbles to calm your mind.</p>
-        <div class="bubble-grid" id="bubbleGrid"></div>
-        <div style="text-align: center; margin-top: 8px;">
-            <button style="background:none; border:none; color:var(--primary); font-size: 12px; cursor:pointer;" onclick="initBubbles()">Reset Bubbles</button>
+        <h2>🌡️ Cramp Intensity Meter</h2>
+        <p style="font-size: 12px; color: var(--text-muted);">How bad is the pain right now?</p>
+        <div class="slider-container">
+            <input type="range" id="crampSlider" min="1" max="10" value="1" oninput="updatePainLevel()">
+            <p id="crampStatus" style="font-weight: 700; color: var(--primary); font-size: 15px;">Level 1: Just a slight annoyance 🦋</p>
         </div>
     </div>
 
-    <!-- MODULE 2: Dog Therapy -->
+    <!-- MODULE 2: BUBBLE WRAP -->
     <div class="card">
-        <h2>🐶 Bella & Biba's Healing Station</h2>
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Tap them for instant serotonin.</p>
+        <h2>🫧 Distraction Bubbles</h2>
+        <div class="bubble-grid" id="bubbleGrid"></div>
+        <div style="text-align: center; margin-top: 8px;">
+            <button style="background:none; border:none; color:var(--primary); font-size: 12px; cursor:pointer; font-weight: bold;" onclick="initBubbles()">🔁 Refill Bubbles</button>
+        </div>
+    </div>
+
+    <!-- MODULE 3: DOG THERAPY -->
+    <div class="card">
+        <h2>🐶 Bella & Biba's Clinic</h2>
         <div class="dog-container" id="dogImage" onclick="petDogs(event)">
             <img src="bella_and_biba.png" alt="Bella and Biba">
         </div>
-        <p class="dog-msg" id="dogMsg">"We are sending you healing licks!"</p>
+        <p class="dog-msg" id="dogMsg">Tap us for good vibes! ✨</p>
     </div>
 
-    <!-- MODULE 3: ADVANCED FULL-BODY RAGE ROOM -->
+    <!-- MODULE 4: RAGE ROOM (ADVANCED) -->
     <div class="card">
-        <h2>🥊 Ayaan's Full-Body Rage Room</h2>
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Choose your weapon and hit anywhere on Ayaan!</p>
+        <h2>🥊 The Boyfriend Punishing Area</h2>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Warning: Weapons are fully operational.</p>
         
         <div class="weapon-selector">
-            <button class="weapon-btn active" onclick="setWeapon('Punch 🥊', this)">🥊 Fist</button>
+            <button class="weapon-btn active" onclick="setWeapon('Fist 🥊', this)">🥊 Mukka</button>
             <button class="weapon-btn" onclick="setWeapon('Chappal 🩴', this)">🩴 Chappal</button>
-            <button class="weapon-btn" onclick="setWeapon('Pillow 🛏️', this)">🛏️ Pillow</button>
-            <button class="weapon-btn" onclick="setWeapon('Bat 🏏', this)">🏏 Bat</button>
+            <button class="weapon-btn" onclick="setWeapon('Pillow 🛏️', this)">🛏️ Takiya</button>
+            <button class="weapon-btn" onclick="setWeapon('Bat 🏏', this)">🏏 Balla</button>
         </div>
 
         <div class="punch-arena" id="punchArena">
-            <!-- CUSTOM UPLOADED CARTOON AVATAR -->
             <div class="avatar-container" id="ayaanAvatar" onclick="handleHit(event)">
+                <div style="position: absolute; width: 180px; height: 180px; background: #e9ecef; border-radius: 50%; z-index: 0; box-shadow: inset 0 0 20px rgba(0,0,0,0.1);" id="avatarBg"></div>
                 
-                <!-- Background Glow -->
-                <div style="position: absolute; width: 180px; height: 180px; background: #e9ecef; border-radius: 50%; z-index: 0;"></div>
-                
-                <!-- Your Custom Image -->
                 <img src="my_cartoon.png" alt="Ayaan Cartoon" style="width: 100%; height: 100%; object-fit: contain; z-index: 1; pointer-events: none;" id="realAvatarImg">
                 
-                <!-- Damage Overlays -->
-                <!-- Band-Aid -->
                 <div id="bandAidHead" style="display:none; position: absolute; top: 15%; left: 40%; z-index: 2; transform: rotate(-15deg);">
                     <div style="width: 30px; height: 12px; background: #d4a373; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></div>
                 </div>
                 
-                <!-- Bruise -->
                 <div id="bruiseTorso" style="display:none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; width: 40px; height: 40px; background: rgba(123, 44, 191, 0); border-radius: 50%; filter: blur(4px);"></div>
             </div>
 
@@ -332,90 +219,147 @@
 
         <div class="rage-stats">
             <span id="hitCounter">Total Hits: 0</span>
-            <span id="currentWeapon">Active Weapon: Punch 🥊</span>
+            <span id="currentWeapon">Weapon: Fist 🥊</span>
         </div>
-        <p class="ayaan-msg" id="ayaanDialogue">"Areyaram! Pehle weapon select karo phir maaro!"</p>
+        <p class="ayaan-msg" id="ayaanDialogue">"Mujhe kyu toda?! 😭"</p>
     </div>
 
-    <!-- MODULE 4: SOS -->
+    <!-- MODULE 5: SOS PROTOCOL -->
     <div class="card">
-        <h2>🚑 Boyfriend SOS Protocol</h2>
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Select what you need right now, and I'll deploy it.</p>
+        <h2>🚑 Boyfriend SOS Order</h2>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Select what you need right now.</p>
         <div class="sos-grid" id="sosGrid">
-            <button class="sos-btn" onclick="toggleSOS(this)">🍫 Chocolates</button>
-            <button class="sos-btn" onclick="toggleSOS(this)">🔥 Heating Pad</button>
-            <button class="sos-btn" onclick="toggleSOS(this)">🤗 Tight Cuddles</button>
-            <button class="sos-btn" onclick="toggleSOS(this)">🍔 Junk Food</button>
-            <button class="sos-btn" onclick="toggleSOS(this)">💊 Pain Meds</button>
-            <button class="sos-btn" onclick="toggleSOS(this)">💆‍♀️ Back Rub</button>
+            <button class="sos-btn" onclick="toggleSOS(this)">🍫 Lots of Chocolate</button>
+            <button class="sos-btn" onclick="toggleSOS(this)">🔥 Hot Water Bag</button>
+            <button class="sos-btn" onclick="toggleSOS(this)">🤗 Tight Hugs</button>
+            <button class="sos-btn" onclick="toggleSOS(this)">🍟 Junk Food</button>
+            <button class="sos-btn" onclick="toggleSOS(this)">💆‍♀️ Head Massage</button>
+            <button class="sos-btn" onclick="toggleSOS(this)">🤫 Just stay quiet</button>
         </div>
-        <button class="action-btn" onclick="sendSOS()">Dispatch Boyfriend 🚀</button>
+        <button class="action-btn" onclick="sendSOS()">Send WhatsApp Order 🚀</button>
     </div>
 
     <script>
         'use strict';
 
+        // --- CRAMP METER LOGIC ---
+        const painStatuses = [
+            "Level 1: Just a slight annoyance 🦋",
+            "Level 2: Uncomfortable, but manageable 🤔",
+            "Level 3: Where is my chocolate?! 🍫",
+            "Level 4: Okay, this is actually hurting now 😣",
+            "Level 5: Heating pad required IMMEDIATELY 🔥",
+            "Level 6: Don't talk to me. Just breathe. 😤",
+            "Level 7: I want to punch a wall (or Ayaan) 🥊",
+            "Level 8: Literal warzone inside my body 🌋",
+            "Level 9: SOUL HAS LEFT THE CHAT 💀",
+            "Level 10: DEMONIC RAGE MODE UNLOCKED 👺"
+        ];
+
+        function updatePainLevel() {
+            const val = document.getElementById('crampSlider').value;
+            document.getElementById('crampStatus').textContent = painStatuses[val - 1];
+            
+            // Dynamic UI Environment Changes
+            const r = document.querySelector(':root');
+            const header = document.getElementById('mainHeader').querySelector('h1');
+            const avatarBg = document.getElementById('avatarBg');
+
+            if (val <= 3) {
+                r.style.setProperty('--bg-color-1', '#fdfbfb');
+                r.style.setProperty('--bg-color-2', '#ebedee');
+                header.style.color = '#4a4a4a';
+                avatarBg.style.background = '#e9ecef';
+            } else if (val <= 7) {
+                r.style.setProperty('--bg-color-1', '#ffd1ff');
+                r.style.setProperty('--bg-color-2', '#fad0c4');
+                header.style.color = '#d63031';
+                avatarBg.style.background = '#ffeaa7';
+            } else {
+                // Rage Mode Colors
+                r.style.setProperty('--bg-color-1', '#ff4b2b');
+                r.style.setProperty('--bg-color-2', '#ff416c');
+                header.style.color = '#ffffff';
+                avatarBg.style.background = '#ff7675';
+            }
+        }
+
         // --- BUBBLE WRAP ---
-        const bubbleGrid = document.getElementById('bubbleGrid');
         function initBubbles() {
-            bubbleGrid.innerHTML = '';
+            const grid = document.getElementById('bubbleGrid');
+            grid.innerHTML = '';
             for(let i=0; i<15; i++) {
-                let bubble = document.createElement('div');
-                bubble.className = 'bubble';
-                bubble.onclick = function() {
+                let b = document.createElement('div');
+                b.className = 'bubble';
+                b.onclick = function() {
                     this.classList.add('popped');
-                    if (navigator.vibrate) navigator.vibrate(40);
+                    if (navigator.vibrate) navigator.vibrate(30);
                 };
-                bubbleGrid.appendChild(bubble);
+                grid.appendChild(b);
             }
         }
         initBubbles();
 
         // --- DOG THERAPY ---
-        const msgs = [
-            "You are the strongest girl I know! ❤️",
-            "Biba says: Don't worry, we will bite the cramps!",
-            "Bella says: You look beautiful even when you're cranky. 🥺",
-            "I wish I could take the pain away. 💖",
-            "You're doing great, my love. Just breathe."
+        const dogLines = [
+            "Biba: We will bite whoever gave you cramps! 🦷",
+            "Bella: You are the prettiest even when angry! 🎀",
+            "Biba: Take a nap, we will guard you. 🛡️",
+            "Bella: Sending fluffy hugs! ☁️"
         ];
         function petDogs(e) {
-            document.getElementById('dogMsg').textContent = msgs[Math.floor(Math.random() * msgs.length)];
-            const rect = document.getElementById('dogImage').getBoundingClientRect();
-            const emoji = document.createElement('div');
-            emoji.className = 'floating-emoji';
-            emoji.innerText = ['💖', '✨', '🐾', '🥰'][Math.floor(Math.random() * 4)];
-            emoji.style.left = `${e.clientX - rect.left}px`;
-            emoji.style.top = `${e.clientY - rect.top}px`;
-            document.getElementById('dogImage').appendChild(emoji);
-            setTimeout(() => { emoji.remove(); }, 1500);
-            if (navigator.vibrate) navigator.vibrate([30, 40, 30]);
+            document.getElementById('dogMsg').textContent = dogLines[Math.floor(Math.random() * dogLines.length)];
+            if (navigator.vibrate) navigator.vibrate([20, 30, 20]);
         }
 
         // --- ADVANCED RAGE ROOM LOGIC ---
-        let selectedWeapon = "Punch 🥊";
+        let selectedWeapon = "Fist 🥊";
+        let weaponClass = "hit-fist";
+        let weaponEmoji = "🥊";
         let totalHits = 0;
 
         function setWeapon(weaponName, btn) {
             document.querySelectorAll('.weapon-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             selectedWeapon = weaponName;
-            document.getElementById('currentWeapon').textContent = `Active Weapon: ${weaponName}`;
+            weaponEmoji = weaponName.split(' ')[1]; // extracts the emoji
+            
+            if(weaponName.includes("Chappal")) weaponClass = "hit-chappal";
+            else if(weaponName.includes("Pillow")) weaponClass = "hit-pillow";
+            else if(weaponName.includes("Bat")) weaponClass = "hit-bat";
+            else weaponClass = "hit-fist";
+
+            document.getElementById('currentWeapon').textContent = `Weapon: ${weaponName}`;
         }
 
-        const hitDialogues = [
-            "Ouch! Is weapon se zyada zor se laga! 😭",
-            "Meri handsome shakal par mat maaro! 🤕",
-            "Pakka period cramps ka sara gussa mujh par nikal rahi ho! 💀",
-            "Areyaram! Thoda taras khao apne boyfriend par! 🙏",
-            "Bas karo, ab toh rona aa jayega! 🤧",
-            "Theek hai, maan liya galti meri hi hai! 🏳️"
-        ];
-        
-        const impactSounds = {
-            "Punch 🥊": ["BAM!", "POW!", "DISHUM!"],
-            "Chappal 🩴": ["CHHAAP!", "SLAP!", "DESI WAIFU POWER!"],
-            "Pillow 🛏️": ["THUD!", "FLUFF!", "POOF!"],
+        // Extremely localized & funny dialogues
+        const dialogues = {
+            "Fist 🥊": [
+                "Mukka mat maar, meri naak toot jayegi! 👃",
+                "Arre baap re! Hulk ban gayi kya?! 💪",
+                "Ye pyaar se maara tha ya sach me gussa thi? 😵"
+            ],
+            "Chappal 🩴": [
+                "Mummy ki flying chappal ki yaad dila di! 😭🩴",
+                "Chappal se kon maarta hai apne cute boyfriend ko?!",
+                "Swag se karenge sabka swagat... chappal se?! 💀"
+            ],
+            "Pillow 🛏️": [
+                "Pillow fight me tu hamesha cheating karti hai! 🏳️",
+                "Ah! Ye toh soft tha... aur zor se maar! 😏",
+                "Dimaag mat khao, takiya khao! 🛏️"
+            ],
+            "Bat 🏏": [
+                "Kohli ban rahi hai kya?! Helmet toh pehnne de! 🏏🤕",
+                "Stadium kyu nahi chali jati tu?! 🏟️",
+                "Umpire! Ye out hai, isne foul play kiya hai! 😭"
+            ]
+        };
+
+        const impactTexts = {
+            "Fist 🥊": ["DISHUM!", "THUD!", "POW!"],
+            "Chappal 🩴": ["CHHAAP!", "SLAP!", "PATAAK!"],
+            "Pillow 🛏️": ["FLUFF!", "POOF!", "BUMP!"],
             "Bat 🏏": ["CRACK!", "SMASH!", "HOME RUN!"]
         };
 
@@ -424,51 +368,53 @@
             document.getElementById('hitCounter').textContent = `Total Hits: ${totalHits}`;
 
             const avatar = document.getElementById('ayaanAvatar');
-            const popup = document.getElementById('hitPopup');
-            
-            // Haptic & Shake Animation
-            if (navigator.vibrate) navigator.vibrate(70);
-            avatar.classList.remove('is-hit');
-            void avatar.offsetWidth;
-            avatar.classList.add('is-hit');
-
-            // Determine body part based on click Y coordinate relative to the container
+            const arena = document.getElementById('punchArena');
             const rect = avatar.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
             const clickY = e.clientY - rect.top;
 
-            // Apply damage based on zone
-            if (clickY < 100) {
-                // Head hit
-                document.getElementById('bandAidHead').style.display = 'block';
-            } else if (clickY >= 100 && clickY < 210) {
-                // Torso hit
-                const bruise = document.getElementById('bruiseTorso');
-                bruise.style.display = 'block';
-                // Extract current opacity from background rgba string
-                let currentBg = bruise.style.background;
-                let opacityMatch = currentBg.match(/rgba\(\d+, \d+, \d+, ([\d.]+)\)/);
-                let currentOpacity = opacityMatch ? parseFloat(opacityMatch[1]) : 0;
-                
-                if(currentOpacity < 0.9) {
-                    bruise.style.background = `rgba(123, 44, 191, ${currentOpacity + 0.3})`;
-                }
-            }
+            // Haptic Feedback
+            if (navigator.vibrate) navigator.vibrate(weaponClass === 'hit-bat' ? [80, 50, 80] : 60);
 
-            // Floating Impact Text
-            const weaponKey = selectedWeapon;
-            const soundList = impactSounds[weaponKey] || ["BAM!"];
-            
+            // 1. Weapon Physics Animation
+            avatar.classList.remove(weaponClass);
+            void avatar.offsetWidth; 
+            avatar.classList.add(weaponClass);
+
+            // 2. Spawn the Weapon Emoji Strike Visualizer
+            const strike = document.createElement('div');
+            strike.className = 'strike-emoji';
+            strike.innerText = weaponEmoji;
+            strike.style.left = `${clickX - 20}px`; // Centering offset
+            strike.style.top = `${clickY - 20}px`;
+            avatar.appendChild(strike);
+            setTimeout(() => strike.remove(), 500); // Cleanup
+
+            // 3. Comic Impact Text (BAM, POW, CHHAAP)
+            const popup = document.getElementById('hitPopup');
+            const soundList = impactTexts[selectedWeapon] || ["BAM!"];
             popup.innerText = soundList[Math.floor(Math.random() * soundList.length)];
-            
-            // Position popup near click
-            popup.style.left = `${(e.clientX - rect.left) - 15}px`;
-            popup.style.top = `${clickY - 20}px`;
+            popup.style.left = `${clickX - 10}px`;
+            popup.style.top = `${clickY - 40}px`;
             popup.style.animation = 'none';
             void popup.offsetWidth;
-            popup.style.animation = 'popUpEffect 0.4s ease-out forwards';
+            popup.style.animation = 'popUpEffect 0.5s ease-out forwards';
 
-            // Random Dialogue
-            document.getElementById('ayaanDialogue').innerText = hitDialogues[Math.floor(Math.random() * hitDialogues.length)];
+            // 4. Update Damage Overlays
+            if (clickY < 100) {
+                document.getElementById('bandAidHead').style.display = 'block';
+            } else if (clickY >= 100 && clickY < 210) {
+                const bruise = document.getElementById('bruiseTorso');
+                bruise.style.display = 'block';
+                let currentBg = bruise.style.background;
+                let opacityMatch = currentBg.match(/rgba\(\d+, \d+, \d+, ([\d.]+)\)/);
+                let currentOp = opacityMatch ? parseFloat(opacityMatch[1]) : 0;
+                if(currentOp < 0.9) bruise.style.background = `rgba(123, 44, 191, ${currentOp + 0.3})`;
+            }
+
+            // 5. Update Dialogues based on active weapon
+            const diagList = dialogues[selectedWeapon] || dialogues["Fist 🥊"];
+            document.getElementById('ayaanDialogue').innerText = diagList[Math.floor(Math.random() * diagList.length)];
         }
 
         // --- SOS PROTOCOL ---
@@ -486,514 +432,18 @@
 
         function sendSOS() {
             if(selectedCravings.size === 0) {
-                alert("Please select at least one thing you need! 🥺");
+                alert("Koi ek order to select karlo pehle! 🥺");
                 return;
             }
+            const painLevel = document.getElementById('crampSlider').value;
             const items = Array.from(selectedCravings).join(", ");
             const phone = "916398038550";
-            const message = `🚨 *NATASHA'S PERIOD SOS* 🚨\n\nHey babe, cramps are bad and I beat up Ayaan ${totalHits} times using a ${selectedWeapon}. Now come fix me immediately with:\n\n👉 *${items}*\n\nHurry up! 🥺❤️`;
+            
+            // Comprehensive, personalized message
+            const message = `🚨 *NATASHA'S CARE ORDER* 🚨\n\nHey Ayaan, my period cramps are at *Level ${painLevel}/10* right now. 😭\n\nI just beat up your virtual cartoon *${totalHits} times* mostly using a *${selectedWeapon}*.\n\nNow I need you to execute the following order immediately:\n👉 *${items}*\n\nDon't make me wait! ❤️`;
+            
             window.location.href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
         }
     </script>
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Natasha's Comfort Kit 🌸</title>
-    <style>
-        :root {
-            --bg-gradient: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --primary: #ff758c;
-            --primary-light: #ff7eb3;
-            --text-main: #4a4a4a;
-            --text-muted: #8e8e93;
-            --apple-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            font-family: var(--apple-font);
-            background: var(--bg-gradient);
-            color: var(--text-main);
-            min-height: 100vh;
-            padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom) 20px;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .header {
-            text-align: center;
-            margin: 25px 0 15px 0;
-        }
-
-        .header h1 {
-            font-size: 26px;
-            color: var(--primary);
-            margin-bottom: 6px;
-        }
-
-        .header p {
-            color: var(--text-muted);
-            font-size: 14px;
-            line-height: 1.4;
-        }
-
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 24px;
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border: 1px solid rgba(255,255,255,0.4);
-        }
-
-        h2 {
-            font-size: 17px;
-            margin-bottom: 12px;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* Module 1: Bubble Wrap */
-        .bubble-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            margin-top: 10px;
-        }
-        .bubble {
-            aspect-ratio: 1;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255, 117, 140, 0.3));
-            box-shadow: inset -2px -2px 6px rgba(0,0,0,0.1), 2px 2px 5px rgba(0,0,0,0.05);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-        }
-        .bubble.popped {
-            background: rgba(255, 117, 140, 0.1);
-            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1);
-            transform: scale(0.9);
-            color: transparent;
-            pointer-events: none;
-        }
-        .bubble.popped::after {
-            content: "✨";
-            color: var(--primary);
-        }
-
-        /* Module 2: Dogs */
-        .dog-container {
-            position: relative;
-            width: 100%;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-        }
-        .dog-container img {
-            width: 100%;
-            display: block;
-            cursor: pointer;
-        }
-        .dog-msg {
-            text-align: center;
-            margin-top: 12px;
-            font-weight: 500;
-            color: var(--primary);
-            min-height: 40px;
-            font-style: italic;
-            font-size: 14px;
-        }
-
-        /* Module 3: Advanced Full-Body Rage Room */
-        .weapon-selector {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-            justify-content: center;
-        }
-        .weapon-btn {
-            background: #f1f3f5;
-            border: 2px solid #dee2e6;
-            padding: 8px 12px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .weapon-btn.active {
-            background: #fff0f3;
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .punch-arena {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            background: #f8f9fa;
-            border-radius: 16px;
-            padding: 15px;
-        }
-
-        .avatar-container {
-            width: 180px;
-            height: 260px;
-            cursor: pointer;
-            position: relative;
-            user-select: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        @keyframes shakeHit {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            20% { transform: translate(-8px, 6px) rotate(-8deg); }
-            40% { transform: translate(8px, -6px) rotate(8deg); }
-            60% { transform: translate(-6px, -4px) rotate(-4deg); }
-            80% { transform: translate(6px, 4px) rotate(4deg); }
-            100% { transform: translate(0, 0) rotate(0deg); }
-        }
-        .is-hit {
-            animation: shakeHit 0.3s ease-in-out;
-        }
-
-        .hit-popup {
-            position: absolute;
-            font-size: 28px;
-            font-weight: 900;
-            color: #ff3b30;
-            text-shadow: 2px 2px 0 #fff;
-            pointer-events: none;
-            opacity: 0;
-            z-index: 20;
-        }
-        @keyframes popUpEffect {
-            0% { transform: scale(0.5) translateY(0); opacity: 1; }
-            100% { transform: scale(1.5) translateY(-40px); opacity: 0; }
-        }
-
-        .rage-stats {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 10px;
-            font-weight: 600;
-        }
-
-        .ayaan-msg {
-            margin-top: 10px;
-            font-weight: 700;
-            color: #ff3b30;
-            height: 24px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        /* Module 4: SOS */
-        .sos-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        .sos-btn {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            padding: 10px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-main);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .sos-btn.selected {
-            background: #fff0f3;
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-        .action-btn {
-            width: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            padding: 15px;
-            border-radius: 14px;
-            border: none;
-            font-size: 15px;
-            font-weight: 700;
-            margin-top: 15px;
-            cursor: pointer;
-            box-shadow: 0 6px 15px rgba(255, 117, 140, 0.3);
-        }
-        .action-btn:active { transform: scale(0.96); }
-
-        .floating-emoji {
-            position: absolute;
-            pointer-events: none;
-            font-size: 22px;
-            animation: floatUp 1.5s ease-out forwards;
-            z-index: 10;
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(0.8); opacity: 1; }
-            100% { transform: translateY(-70px) scale(1.2); opacity: 0; }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="header">
-        <h1>Morning, Natasha 🌸</h1>
-        <p>Cramps hurting? Let out all your frustration right here.</p>
-    </div>
-
-    <!-- MODULE 1: Bubble Wrap -->
-    <div class="card">
-        <h2>🫧 Pop The Pain Away</h2>
-        <p style="font-size: 12px; color: var(--text-muted);">Tap the bubbles to calm your mind.</p>
-        <div class="bubble-grid" id="bubbleGrid"></div>
-        <div style="text-align: center; margin-top: 8px;">
-            <button style="background:none; border:none; color:var(--primary); font-size: 12px; cursor:pointer;" onclick="initBubbles()">Reset Bubbles</button>
-        </div>
-    </div>
-
-    <!-- MODULE 2: Dog Therapy -->
-    <div class="card">
-        <h2>🐶 Bella & Biba's Healing Station</h2>
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Tap them for instant serotonin.</p>
-        <div class="dog-container" id="dogImage" onclick="petDogs(event)">
-            <img src="bella_and_biba.png" alt="Bella and Biba">
-        </div>
-        <p class="dog-msg" id="dogMsg">"We are sending you healing licks!"</p>
-    </div>
-
-    <!-- MODULE 3: ADVANCED FULL-BODY RAGE ROOM -->
-    <div class="card">
-        <h2>🥊 Ayaan's Full-Body Rage Room</h2>
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Choose your weapon and hit anywhere on Ayaan!</p>
-        
-        <div class="weapon-selector">
-            <button class="weapon-btn active" onclick="setWeapon('Punch 🥊', this)">🥊 Fist</button>
-            <button class="weapon-btn" onclick="setWeapon('Chappal 🩴', this)">🩴 Chappal</button>
-            <button class="weapon-btn" onclick="setWeapon('Pillow 🛏️', this)">🛏️ Pillow</button>
-            <button class="weapon-btn" onclick="setWeapon('Bat 🏏', this)">🏏 Bat</button>
-        </div>
-
-        <div class="punch-arena" id="punchArena">
-            <!-- CUSTOM UPLOADED CARTOON AVATAR -->
-            <div class="avatar-container" id="ayaanAvatar" onclick="handleHit(event)">
-                
-                <!-- Background Glow -->
-                <div style="position: absolute; width: 180px; height: 180px; background: #e9ecef; border-radius: 50%; z-index: 0;"></div>
-                
-                <!-- Your Custom Image -->
-                <img src="my_cartoon.png" alt="Ayaan Cartoon" style="width: 100%; height: 100%; object-fit: contain; z-index: 1; pointer-events: none;" id="realAvatarImg">
-                
-                <!-- Damage Overlays -->
-                <!-- Band-Aid -->
-                <div id="bandAidHead" style="display:none; position: absolute; top: 15%; left: 40%; z-index: 2; transform: rotate(-15deg);">
-                    <div style="width: 30px; height: 12px; background: #d4a373; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></div>
-                </div>
-                
-                <!-- Bruise -->
-                <div id="bruiseTorso" style="display:none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; width: 40px; height: 40px; background: rgba(123, 44, 191, 0); border-radius: 50%; filter: blur(4px);"></div>
-            </div>
-
-            <div id="hitPopup" class="hit-popup">BAM!</div>
-        </div>
-
-        <div class="rage-stats">
-            <span id="hitCounter">Total Hits: 0</span>
-            <span id="currentWeapon">Active Weapon: Punch 🥊</span>
-        </div>
-        <p class="ayaan-msg" id="ayaanDialogue">"Areyaram! Pehle weapon select karo phir maaro!"</p>
-    </div>
-
-    <!-- MODULE 4: SOS -->
-    <div class="card">
-        <h2>🚑 Boyfriend SOS Protocol</h2>
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Select what you need right now, and I'll deploy it.</p>
-        <div class="sos-grid" id="sosGrid">
-            <button class="sos-btn" onclick="toggleSOS(this)">🍫 Chocolates</button>
-            <button class="sos-btn" onclick="toggleSOS(this)">🔥 Heating Pad</button>
-            <button class="sos-btn" onclick="toggleSOS(this)">🤗 Tight Cuddles</button>
-            <button class="sos-btn" onclick="toggleSOS(this)">🍔 Junk Food</button>
-            <button class="sos-btn" onclick="toggleSOS(this)">💊 Pain Meds</button>
-            <button class="sos-btn" onclick="toggleSOS(this)">💆‍♀️ Back Rub</button>
-        </div>
-        <button class="action-btn" onclick="sendSOS()">Dispatch Boyfriend 🚀</button>
-    </div>
-
-    <script>
-        'use strict';
-
-        // --- BUBBLE WRAP ---
-        const bubbleGrid = document.getElementById('bubbleGrid');
-        function initBubbles() {
-            bubbleGrid.innerHTML = '';
-            for(let i=0; i<15; i++) {
-                let bubble = document.createElement('div');
-                bubble.className = 'bubble';
-                bubble.onclick = function() {
-                    this.classList.add('popped');
-                    if (navigator.vibrate) navigator.vibrate(40);
-                };
-                bubbleGrid.appendChild(bubble);
-            }
-        }
-        initBubbles();
-
-        // --- DOG THERAPY ---
-        const msgs = [
-            "You are the strongest girl I know! ❤️",
-            "Biba says: Don't worry, we will bite the cramps!",
-            "Bella says: You look beautiful even when you're cranky. 🥺",
-            "I wish I could take the pain away. 💖",
-            "You're doing great, my love. Just breathe."
-        ];
-        function petDogs(e) {
-            document.getElementById('dogMsg').textContent = msgs[Math.floor(Math.random() * msgs.length)];
-            const rect = document.getElementById('dogImage').getBoundingClientRect();
-            const emoji = document.createElement('div');
-            emoji.className = 'floating-emoji';
-            emoji.innerText = ['💖', '✨', '🐾', '🥰'][Math.floor(Math.random() * 4)];
-            emoji.style.left = `${e.clientX - rect.left}px`;
-            emoji.style.top = `${e.clientY - rect.top}px`;
-            document.getElementById('dogImage').appendChild(emoji);
-            setTimeout(() => { emoji.remove(); }, 1500);
-            if (navigator.vibrate) navigator.vibrate([30, 40, 30]);
-        }
-
-        // --- ADVANCED RAGE ROOM LOGIC ---
-        let selectedWeapon = "Punch 🥊";
-        let totalHits = 0;
-
-        function setWeapon(weaponName, btn) {
-            document.querySelectorAll('.weapon-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            selectedWeapon = weaponName;
-            document.getElementById('currentWeapon').textContent = `Active Weapon: ${weaponName}`;
-        }
-
-        const hitDialogues = [
-            "Ouch! Is weapon se zyada zor se laga! 😭",
-            "Meri handsome shakal par mat maaro! 🤕",
-            "Pakka period cramps ka sara gussa mujh par nikal rahi ho! 💀",
-            "Areyaram! Thoda taras khao apne boyfriend par! 🙏",
-            "Bas karo, ab toh rona aa jayega! 🤧",
-            "Theek hai, maan liya galti meri hi hai! 🏳️"
-        ];
-        
-        const impactSounds = {
-            "Punch 🥊": ["BAM!", "POW!", "DISHUM!"],
-            "Chappal 🩴": ["CHHAAP!", "SLAP!", "DESI WAIFU POWER!"],
-            "Pillow 🛏️": ["THUD!", "FLUFF!", "POOF!"],
-            "Bat 🏏": ["CRACK!", "SMASH!", "HOME RUN!"]
-        };
-
-        function handleHit(e) {
-            totalHits++;
-            document.getElementById('hitCounter').textContent = `Total Hits: ${totalHits}`;
-
-            const avatar = document.getElementById('ayaanAvatar');
-            const popup = document.getElementById('hitPopup');
-            
-            // Haptic & Shake Animation
-            if (navigator.vibrate) navigator.vibrate(70);
-            avatar.classList.remove('is-hit');
-            void avatar.offsetWidth;
-            avatar.classList.add('is-hit');
-
-            // Determine body part based on click Y coordinate relative to the container
-            const rect = avatar.getBoundingClientRect();
-            const clickY = e.clientY - rect.top;
-
-            // Apply damage based on zone
-            if (clickY < 100) {
-                // Head hit
-                document.getElementById('bandAidHead').style.display = 'block';
-            } else if (clickY >= 100 && clickY < 210) {
-                // Torso hit
-                const bruise = document.getElementById('bruiseTorso');
-                bruise.style.display = 'block';
-                // Extract current opacity from background rgba string
-                let currentBg = bruise.style.background;
-                let opacityMatch = currentBg.match(/rgba\(\d+, \d+, \d+, ([\d.]+)\)/);
-                let currentOpacity = opacityMatch ? parseFloat(opacityMatch[1]) : 0;
-                
-                if(currentOpacity < 0.9) {
-                    bruise.style.background = `rgba(123, 44, 191, ${currentOpacity + 0.3})`;
-                }
-            }
-
-            // Floating Impact Text
-            const weaponKey = selectedWeapon;
-            const soundList = impactSounds[weaponKey] || ["BAM!"];
-            
-            popup.innerText = soundList[Math.floor(Math.random() * soundList.length)];
-            
-            // Position popup near click
-            popup.style.left = `${(e.clientX - rect.left) - 15}px`;
-            popup.style.top = `${clickY - 20}px`;
-            popup.style.animation = 'none';
-            void popup.offsetWidth;
-            popup.style.animation = 'popUpEffect 0.4s ease-out forwards';
-
-            // Random Dialogue
-            document.getElementById('ayaanDialogue').innerText = hitDialogues[Math.floor(Math.random() * hitDialogues.length)];
-        }
-
-        // --- SOS PROTOCOL ---
-        const selectedCravings = new Set();
-        function toggleSOS(btn) {
-            const item = btn.innerText;
-            if(selectedCravings.has(item)) {
-                selectedCravings.delete(item);
-                btn.classList.remove('selected');
-            } else {
-                selectedCravings.add(item);
-                btn.classList.add('selected');
-            }
-        }
-
-        function sendSOS() {
-            if(selectedCravings.size === 0) {
-                alert("Please select at least one thing you need! 🥺");
-                return;
-            }
-            const items = Array.from(selectedCravings).join(", ");
-            const phone = "916398038550";
-            const message = `🚨 *NATASHA'S PERIOD SOS* 🚨\n\nHey babe, cramps are bad and I beat up Ayaan ${totalHits} times using a ${selectedWeapon}. Now come fix me immediately with:\n\n👉 *${items}*\n\nHurry up! 🥺❤️`;
-            window.location.href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-        }
-    </script>
-</body>
-</html>
-
