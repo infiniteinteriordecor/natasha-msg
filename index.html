@@ -4,195 +4,185 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="robots" content="noindex, nofollow">
-    <title>Natasha's Comfort Kit 🌸</title>
+    <title>Natasha's Healing App 🌸</title>
     <style>
         :root {
-            /* Dynamic background variables updated via JS */
-            --bg-color-1: #fdfbfb;
-            --bg-color-2: #ebedee;
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --primary: #ff758c;
-            --primary-light: #ff7eb3;
-            --text-main: #4a4a4a;
-            --text-muted: #8e8e93;
+            --primary: #ff4d6d;
+            --bg-color-1: #ffecd2;
+            --bg-color-2: #fcb69f;
+            --glass-bg: rgba(255, 255, 255, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --text-main: #2d3436;
             --apple-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+            box-sizing: border-box; margin: 0; padding: 0;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
             font-family: var(--apple-font);
             background: linear-gradient(135deg, var(--bg-color-1) 0%, var(--bg-color-2) 100%);
+            background-attachment: fixed;
             color: var(--text-main);
             min-height: 100vh;
             padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom) 20px;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: background 0.5s ease;
+            overflow-x: hidden; display: flex; flex-direction: column; align-items: center;
+            transition: background 0.8s ease;
         }
 
-        .header { text-align: center; margin: 25px 0 15px 0; }
-        .header h1 { font-size: 26px; color: var(--text-main); margin-bottom: 6px; transition: color 0.3s; }
-        .header p { color: var(--text-muted); font-size: 14px; line-height: 1.4; }
+        /* --- Welcome Overlay (Required for Audio Policy) --- */
+        #welcomeOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+        .tap-btn {
+            background: var(--primary); color: white; padding: 20px 40px; border-radius: 30px;
+            font-size: 20px; font-weight: bold; border: none; box-shadow: 0 10px 30px rgba(255, 77, 109, 0.4);
+            cursor: pointer; animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.05);} 100% {transform: scale(1);} }
+
+        /* --- Modern Glassmorphism UI --- */
+        .header { text-align: center; margin: 20px 0 25px 0; }
+        .header h1 { font-size: 28px; color: var(--text-main); font-weight: 800; letter-spacing: -0.5px;}
+        .header p { color: #636e72; font-size: 15px; font-weight: 500;}
 
         .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 24px;
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border: 1px solid rgba(255,255,255,0.4);
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px) saturate(150%);
+            -webkit-backdrop-filter: blur(25px) saturate(150%);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            width: 100%; max-width: 400px;
+            padding: 25px 20px; margin-bottom: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
             transition: transform 0.3s;
         }
 
-        h2 { font-size: 17px; margin-bottom: 12px; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+        h2 { font-size: 18px; margin-bottom: 15px; color: var(--text-main); font-weight: 700; display: flex; align-items: center; gap: 8px;}
 
-        /* --- Cramp Slider --- */
-        .slider-container { width: 100%; text-align: center; margin-top: 10px; }
-        input[type=range] {
-            -webkit-appearance: none; width: 100%; margin: 15px 0; background: transparent;
+        /* --- 3D Balloons Guldasta --- */
+        .balloon-container {
+            position: relative; height: 220px; width: 100%;
+            display: flex; justify-content: center; align-items: flex-end; margin-top: 10px;
         }
-        input[type=range]::-webkit-slider-runnable-track {
-            width: 100%; height: 8px; cursor: pointer; background: #ddd; border-radius: 8px;
+        .balloon {
+            position: absolute; width: 65px; height: 85px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            box-shadow: inset -5px -5px 15px rgba(0,0,0,0.1), 5px 10px 15px rgba(0,0,0,0.05);
+            cursor: pointer; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+            transform-origin: bottom center;
         }
-        input[type=range]::-webkit-slider-thumb {
-            height: 24px; width: 24px; border-radius: 50%; background: var(--primary); cursor: pointer;
-            -webkit-appearance: none; margin-top: -8px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        /* Balloon Knot */
+        .balloon::after {
+            content: ""; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+            width: 10px; height: 12px; background: inherit; filter: brightness(0.8);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
         }
+        .balloon.popped { transform: scale(0); opacity: 0; pointer-events: none; }
+        
+        .comfort-msg {
+            position: absolute; font-size: 16px; font-weight: 700; color: var(--primary);
+            pointer-events: none; opacity: 0; z-index: 10; text-shadow: 0 2px 5px rgba(255,255,255,0.8);
+        }
+        @keyframes floatMsg { 0% { transform: translateY(0) scale(0.5); opacity: 1; } 100% { transform: translateY(-40px) scale(1.2); opacity: 0; } }
 
-        /* --- Bubble Wrap --- */
-        .bubble-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 10px; }
-        .bubble {
-            aspect-ratio: 1; border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255, 117, 140, 0.3));
-            box-shadow: inset -2px -2px 6px rgba(0,0,0,0.1), 2px 2px 5px rgba(0,0,0,0.05);
-            cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px;
-        }
-        .bubble.popped {
-            background: rgba(255, 117, 140, 0.1); box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1);
-            transform: scale(0.9); color: transparent; pointer-events: none;
-        }
-        .bubble.popped::after { content: "💥"; color: var(--primary); }
+        /* --- Realistic Dog Therapy --- */
+        .dog-container { border-radius: 20px; overflow: hidden; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .dog-container img { width: 100%; display: block; cursor: crosshair; }
+        .dog-msg { text-align: center; margin-top: 15px; font-weight: 600; color: var(--primary); font-size: 15px; min-height: 22px; transition: 0.3s;}
 
-        /* --- Dogs --- */
-        .dog-container { border-radius: 16px; overflow: hidden; position: relative; }
-        .dog-container img { width: 100%; display: block; cursor: pointer; }
-        .dog-msg { text-align: center; margin-top: 12px; font-weight: 500; color: var(--primary); font-style: italic; font-size: 14px; min-height: 20px;}
-
-        /* --- Rage Room --- */
-        .weapon-selector { display: flex; gap: 6px; margin-bottom: 15px; justify-content: center; flex-wrap: wrap;}
+        /* --- Realistic Rage Room --- */
+        .weapon-selector { display: flex; gap: 8px; margin-bottom: 20px; justify-content: center; flex-wrap: wrap;}
         .weapon-btn {
-            background: #f1f3f5; border: 2px solid #dee2e6; padding: 8px 10px; border-radius: 12px;
-            font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+            background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.05); padding: 10px 15px; border-radius: 20px;
+            font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.03);
         }
-        .weapon-btn.active { background: #fff0f3; border-color: var(--primary); color: var(--primary); }
+        .weapon-btn.active { background: #fff; border-color: var(--primary); color: var(--primary); box-shadow: 0 4px 15px rgba(255,77,109,0.2); }
 
         .punch-arena {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            position: relative; background: #f8f9fa; border-radius: 16px; padding: 15px; overflow: hidden;
+            position: relative; background: rgba(255,255,255,0.3); border-radius: 24px; padding: 20px;
+            box-shadow: inset 0 10px 20px rgba(0,0,0,0.05);
         }
-
-        .avatar-container {
-            width: 180px; height: 260px; cursor: pointer; position: relative; user-select: none;
-            display: flex; justify-content: center; align-items: center;
-            transition: transform 0.1s ease-out;
-        }
-
-        /* Dynamic Weapon Physics Animations */
-        @keyframes animFist { 0%, 100% {transform: translate(0,0);} 25% {transform: translate(-10px, 5px);} 75% {transform: translate(10px, -5px);} }
-        @keyframes animChappal { 0%, 100% {transform: rotate(0deg);} 30% {transform: rotate(-15deg) translateX(-10px);} 70% {transform: rotate(15deg) translateX(10px);} }
-        @keyframes animPillow { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.1, 0.8);} }
-        @keyframes animBat { 0%, 100% {transform: translateX(0) rotate(0);} 50% {transform: translateX(25px) rotate(10deg);} }
+        .avatar-container { width: 180px; height: 260px; cursor: pointer; position: relative; user-select: none; display: flex; justify-content: center; align-items: center; }
         
         .hit-fist { animation: animFist 0.3s ease-in-out; }
         .hit-chappal { animation: animChappal 0.4s ease-in-out; }
         .hit-pillow { animation: animPillow 0.3s ease-in-out; }
         .hit-bat { animation: animBat 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        @keyframes animFist { 0%, 100% {transform: translate(0,0);} 25% {transform: translate(-10px, 5px);} 75% {transform: translate(10px, -5px);} }
+        @keyframes animChappal { 0%, 100% {transform: rotate(0deg);} 30% {transform: rotate(-15deg) translateX(-10px);} 70% {transform: rotate(15deg) translateX(10px);} }
+        @keyframes animPillow { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.1, 0.8);} }
+        @keyframes animBat { 0%, 100% {transform: translateX(0) rotate(0);} 50% {transform: translateX(25px) rotate(10deg);} }
 
-        /* The flying weapon emoji that spawns on tap */
-        .strike-emoji {
-            position: absolute; font-size: 40px; pointer-events: none; z-index: 30;
-            animation: strikeEffect 0.5s ease-out forwards; text-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        @keyframes strikeEffect {
-            0% { transform: scale(2) rotate(-20deg); opacity: 1; }
-            100% { transform: scale(1) rotate(20deg) translateY(-50px); opacity: 0; }
-        }
+        .strike-emoji { position: absolute; font-size: 45px; pointer-events: none; z-index: 30; animation: strikeEffect 0.5s ease-out forwards; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3)); }
+        @keyframes strikeEffect { 0% { transform: scale(1.5) rotate(-20deg); opacity: 1; } 100% { transform: scale(1) rotate(20deg) translateY(-50px); opacity: 0; } }
 
-        .hit-popup {
-            position: absolute; font-size: 26px; font-weight: 900; color: #ff3b30;
-            text-shadow: 2px 2px 0 #fff, -1px -1px 0 #000; pointer-events: none; opacity: 0; z-index: 20;
-        }
+        .hit-popup { position: absolute; font-size: 28px; font-weight: 900; color: #ff3b30; text-shadow: 2px 2px 0 #fff, -1px -1px 0 #000; pointer-events: none; opacity: 0; z-index: 20; }
         @keyframes popUpEffect { 0% { transform: scale(0.5) translateY(0); opacity: 1; } 100% { transform: scale(1.5) translateY(-40px); opacity: 0; } }
 
-        .rage-stats { display: flex; justify-content: space-between; width: 100%; font-size: 12px; color: var(--text-muted); margin-top: 10px; font-weight: 600; }
-        .ayaan-msg { margin-top: 10px; font-weight: 700; color: #ff3b30; min-height: 35px; text-align: center; font-size: 14px; }
+        .ayaan-msg { margin-top: 15px; font-weight: 700; color: #d63031; min-height: 40px; text-align: center; font-size: 15px; }
 
-        /* --- SOS Module --- */
-        .sos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        /* --- Modern SOS --- */
+        .sos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .sos-btn {
-            background: #f8f9fa; border: 2px solid #e9ecef; padding: 10px; border-radius: 12px;
-            font-size: 13px; font-weight: 600; color: var(--text-main); cursor: pointer; transition: all 0.2s;
+            background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.8); padding: 12px; border-radius: 16px;
+            font-size: 14px; font-weight: 600; color: var(--text-main); cursor: pointer; transition: 0.2s;
         }
-        .sos-btn.selected { background: #fff0f3; border-color: var(--primary); color: var(--primary); }
+        .sos-btn.selected { background: #fff0f3; border-color: var(--primary); color: var(--primary); box-shadow: 0 4px 10px rgba(255,77,109,0.15); }
         .action-btn {
-            width: 100%; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white; padding: 15px; border-radius: 14px; border: none; font-size: 15px; font-weight: 700;
-            margin-top: 15px; cursor: pointer; box-shadow: 0 6px 15px rgba(255, 117, 140, 0.3);
+            width: 100%; background: linear-gradient(135deg, var(--primary) 0%, #ff8a9d 100%);
+            color: white; padding: 18px; border-radius: 20px; border: none; font-size: 16px; font-weight: 800;
+            margin-top: 20px; cursor: pointer; box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4); transition: transform 0.2s;
         }
-        .action-btn:active { transform: scale(0.96); }
+        .action-btn:active { transform: scale(0.95); }
+
     </style>
 </head>
 <body>
 
+    <!-- AUDIO POLICY OVERLAY -->
+    <div id="welcomeOverlay">
+        <h1 style="color: var(--primary); margin-bottom: 20px; text-align: center;">Hey Natasha 🌸</h1>
+        <p style="margin-bottom: 30px; font-weight: 500; color: #555;">Turn on your volume.</p>
+        <button class="tap-btn" onclick="startExperience()">Tap to Open ✨</button>
+    </div>
+
     <div class="header" id="mainHeader">
-        <h1>Morning, Natasha 🌸</h1>
-        <p>Your personal healing & rage center.</p>
+        <h1>Your Safe Space 🌸</h1>
+        <p>Because you deserve to be pampered.</p>
     </div>
 
-    <!-- MODULE 1: CRAMP TRACKER -->
+    <!-- MODULE 1: BALLOON GULDASTA (REPLACES BUBBLE WRAP) -->
     <div class="card">
-        <h2>🌡️ Cramp Intensity Meter</h2>
-        <p style="font-size: 12px; color: var(--text-muted);">How bad is the pain right now?</p>
-        <div class="slider-container">
-            <input type="range" id="crampSlider" min="1" max="10" value="1" oninput="updatePainLevel()">
-            <p id="crampStatus" style="font-weight: 700; color: var(--primary); font-size: 15px;">Level 1: Just a slight annoyance 🦋</p>
+        <h2>🎈 Stress Release Balloons</h2>
+        <p style="font-size: 13px; color: var(--text-muted);">Pop them to release the tension.</p>
+        <div class="balloon-container" id="balloonGrid"></div>
+        <div style="text-align: center; margin-top: 15px;">
+            <button style="background:rgba(255,255,255,0.8); border:1px solid #ddd; padding: 10px 20px; border-radius: 20px; color:var(--primary); font-size: 14px; font-weight: 700; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05);" onclick="initBalloons()">🔄 Refill Balloons</button>
         </div>
     </div>
 
-    <!-- MODULE 2: BUBBLE WRAP -->
-    <div class="card">
-        <h2>🫧 Distraction Bubbles</h2>
-        <div class="bubble-grid" id="bubbleGrid"></div>
-        <div style="text-align: center; margin-top: 8px;">
-            <button style="background:none; border:none; color:var(--primary); font-size: 12px; cursor:pointer; font-weight: bold;" onclick="initBubbles()">🔁 Refill Bubbles</button>
-        </div>
-    </div>
-
-    <!-- MODULE 3: DOG THERAPY -->
+    <!-- MODULE 2: DOG THERAPY (LEFT = BELLA, RIGHT = BIBA) -->
     <div class="card">
         <h2>🐶 Bella & Biba's Clinic</h2>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Tap Bella (Left) or Biba (Right) to talk to them.</p>
         <div class="dog-container" id="dogImage" onclick="petDogs(event)">
             <img src="bella_and_biba.png" alt="Bella and Biba">
         </div>
-        <p class="dog-msg" id="dogMsg">Tap us for good vibes! ✨</p>
+        <p class="dog-msg" id="dogMsg">"Tap on us for some cuddles!"</p>
     </div>
 
-    <!-- MODULE 4: RAGE ROOM (ADVANCED) -->
+    <!-- MODULE 3: RAGE ROOM (30+ MEME DIALOGUES) -->
     <div class="card">
         <h2>🥊 The Boyfriend Punishing Area</h2>
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Warning: Weapons are fully operational.</p>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Cramps causing anger? Use a weapon!</p>
         
         <div class="weapon-selector">
             <button class="weapon-btn active" onclick="setWeapon('Fist 🥊', this)">🥊 Mukka</button>
@@ -203,7 +193,7 @@
 
         <div class="punch-arena" id="punchArena">
             <div class="avatar-container" id="ayaanAvatar" onclick="handleHit(event)">
-                <div style="position: absolute; width: 180px; height: 180px; background: #e9ecef; border-radius: 50%; z-index: 0; box-shadow: inset 0 0 20px rgba(0,0,0,0.1);" id="avatarBg"></div>
+                <div style="position: absolute; width: 180px; height: 180px; background: rgba(255,255,255,0.5); border-radius: 50%; z-index: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1);" id="avatarBg"></div>
                 
                 <img src="my_cartoon.png" alt="Ayaan Cartoon" style="width: 100%; height: 100%; object-fit: contain; z-index: 1; pointer-events: none;" id="realAvatarImg">
                 
@@ -216,24 +206,19 @@
 
             <div id="hitPopup" class="hit-popup">BAM!</div>
         </div>
-
-        <div class="rage-stats">
-            <span id="hitCounter">Total Hits: 0</span>
-            <span id="currentWeapon">Weapon: Fist 🥊</span>
-        </div>
-        <p class="ayaan-msg" id="ayaanDialogue">"Mujhe kyu toda?! 😭"</p>
+        <p class="ayaan-msg" id="ayaanDialogue">"Ayaan is ready for punishment! 😭"</p>
     </div>
 
-    <!-- MODULE 5: SOS PROTOCOL -->
+    <!-- MODULE 4: SOS PROTOCOL -->
     <div class="card">
         <h2>🚑 Boyfriend SOS Order</h2>
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Select what you need right now.</p>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">What will make you feel better right now?</p>
         <div class="sos-grid" id="sosGrid">
             <button class="sos-btn" onclick="toggleSOS(this)">🍫 Lots of Chocolate</button>
             <button class="sos-btn" onclick="toggleSOS(this)">🔥 Hot Water Bag</button>
             <button class="sos-btn" onclick="toggleSOS(this)">🤗 Tight Hugs</button>
             <button class="sos-btn" onclick="toggleSOS(this)">🍟 Junk Food</button>
-            <button class="sos-btn" onclick="toggleSOS(this)">💆‍♀️ Head Massage</button>
+            <button class="sos-btn" onclick="toggleSOS(this)">💆‍♀️ Back Massage</button>
             <button class="sos-btn" onclick="toggleSOS(this)">🤫 Just stay quiet</button>
         </div>
         <button class="action-btn" onclick="sendSOS()">Send WhatsApp Order 🚀</button>
@@ -242,77 +227,124 @@
     <script>
         'use strict';
 
-        // --- CRAMP METER LOGIC ---
-        const painStatuses = [
-            "Level 1: Just a slight annoyance 🦋",
-            "Level 2: Uncomfortable, but manageable 🤔",
-            "Level 3: Where is my chocolate?! 🍫",
-            "Level 4: Okay, this is actually hurting now 😣",
-            "Level 5: Heating pad required IMMEDIATELY 🔥",
-            "Level 6: Don't talk to me. Just breathe. 😤",
-            "Level 7: I want to punch a wall (or Ayaan) 🥊",
-            "Level 8: Literal warzone inside my body 🌋",
-            "Level 9: SOUL HAS LEFT THE CHAT 💀",
-            "Level 10: DEMONIC RAGE MODE UNLOCKED 👺"
-        ];
+        // --- 1. AUDIO & INITIALIZATION ENGINE ---
+        function startExperience() {
+            const overlay = document.getElementById('welcomeOverlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.style.display = 'none', 500);
 
-        function updatePainLevel() {
-            const val = document.getElementById('crampSlider').value;
-            document.getElementById('crampStatus').textContent = painStatuses[val - 1];
+            // Programmatic Text-to-Speech (Zero External Files needed)
+            const synth = window.speechSynthesis;
             
-            // Dynamic UI Environment Changes
-            const r = document.querySelector(':root');
-            const header = document.getElementById('mainHeader').querySelector('h1');
-            const avatarBg = document.getElementById('avatarBg');
+            // Generate Dog Barks
+            const bark = new SpeechSynthesisUtterance("Bhow. Bhow.");
+            bark.pitch = 2.0; 
+            bark.rate = 1.5;
+            
+            // Generate Voice Note
+            const voiceNote = new SpeechSynthesisUtterance("Good morning Natasha. I love you baby.");
+            voiceNote.pitch = 0.9; // Deep romantic tone
+            voiceNote.rate = 0.85; // Slow and comforting
+            
+            // Try to find a male English voice if available in browser
+            let voices = synth.getVoices();
+            let selectedVoice = voices.find(v => v.lang.includes('en') && (v.name.includes('Male') || v.name.includes('Google UK English Male')));
+            if(selectedVoice) voiceNote.voice = selectedVoice;
 
-            if (val <= 3) {
-                r.style.setProperty('--bg-color-1', '#fdfbfb');
-                r.style.setProperty('--bg-color-2', '#ebedee');
-                header.style.color = '#4a4a4a';
-                avatarBg.style.background = '#e9ecef';
-            } else if (val <= 7) {
-                r.style.setProperty('--bg-color-1', '#ffd1ff');
-                r.style.setProperty('--bg-color-2', '#fad0c4');
-                header.style.color = '#d63031';
-                avatarBg.style.background = '#ffeaa7';
-            } else {
-                // Rage Mode Colors
-                r.style.setProperty('--bg-color-1', '#ff4b2b');
-                r.style.setProperty('--bg-color-2', '#ff416c');
-                header.style.color = '#ffffff';
-                avatarBg.style.background = '#ff7675';
-            }
+            synth.speak(bark);
+            setTimeout(() => synth.speak(voiceNote), 1200);
         }
 
-        // --- BUBBLE WRAP ---
-        function initBubbles() {
-            const grid = document.getElementById('bubbleGrid');
-            grid.innerHTML = '';
-            for(let i=0; i<15; i++) {
-                let b = document.createElement('div');
-                b.className = 'bubble';
-                b.onclick = function() {
-                    this.classList.add('popped');
-                    if (navigator.vibrate) navigator.vibrate(30);
-                };
-                grid.appendChild(b);
-            }
-        }
-        initBubbles();
-
-        // --- DOG THERAPY ---
-        const dogLines = [
-            "Biba: We will bite whoever gave you cramps! 🦷",
-            "Bella: You are the prettiest even when angry! 🎀",
-            "Biba: Take a nap, we will guard you. 🛡️",
-            "Bella: Sending fluffy hugs! ☁️"
+        // --- 2. 3D BALLOON GULDASTA LOGIC ---
+        const comfortWords = ["Relax ✨", "Breathe 🌬️", "You're Cute 🥺", "Smile 🌸", "Let it go 🍃", "Beautiful ❤️", "Calm Down 🧘‍♀️"];
+        const balloonGradients = [
+            "radial-gradient(circle at 30% 30%, #ff9a9e, #fecfef)",
+            "radial-gradient(circle at 30% 30%, #a1c4fd, #c2e9fb)",
+            "radial-gradient(circle at 30% 30%, #fbc2eb, #a6c1ee)",
+            "radial-gradient(circle at 30% 30%, #fdcbf1, #e6dee9)",
+            "radial-gradient(circle at 30% 30%, #a8edea, #fed6e3)",
+            "radial-gradient(circle at 30% 30%, #ffecd2, #fcb69f)"
         ];
+
+        function initBalloons() {
+            const container = document.getElementById('balloonGrid');
+            container.innerHTML = '';
+            // Generate a bunch of 8 large balloons
+            for(let i=0; i<8; i++) {
+                let balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                
+                // Randomize Positioning in the cluster
+                let leftPos = 10 + (Math.random() * 60); // 10% to 70%
+                let bottomPos = 10 + (Math.random() * 40); // 10px to 50px
+                let zIndex = Math.floor(Math.random() * 10);
+                
+                // Random Color
+                balloon.style.background = balloonGradients[Math.floor(Math.random() * balloonGradients.length)];
+                balloon.style.left = `${leftPos}%`;
+                balloon.style.bottom = `${bottomPos}px`;
+                balloon.style.zIndex = zIndex;
+
+                // Pop Logic
+                balloon.onclick = function(e) {
+                    this.classList.add('popped');
+                    if(navigator.vibrate) navigator.vibrate(40);
+                    
+                    // Spawn Message
+                    let msg = document.createElement('div');
+                    msg.className = 'comfort-msg';
+                    msg.innerText = comfortWords[Math.floor(Math.random() * comfortWords.length)];
+                    
+                    // Position relative to the container
+                    const rect = container.getBoundingClientRect();
+                    msg.style.left = `${e.clientX - rect.left - 20}px`;
+                    msg.style.top = `${e.clientY - rect.top - 20}px`;
+                    
+                    container.appendChild(msg);
+                    msg.style.animation = 'floatMsg 1.5s ease-out forwards';
+                    setTimeout(() => msg.remove(), 1500);
+                };
+                container.appendChild(balloon);
+            }
+        }
+        initBalloons(); // Run on load
+
+        // --- 3. DOG THERAPY (LEFT VS RIGHT TRACKING) ---
+        const bellaLines = [
+            "Bella (Left): Main white hu, aur tumhara dil bhi saaf hai! 🤍",
+            "Bella (Left): Tension mat lo, main hu na! 🎀",
+            "Bella (Left): Ayaan ko chhodo, main tumse zyada pyar karti hu! 🐾",
+            "Bella (Left): Tumhari smile bohot cute hai! 🥺"
+        ];
+        
+        const bibaLines = [
+            "Biba (Right): Mujhe bhook lagi hai... aur tumhe chidchidahat! 🍗",
+            "Biba (Right): Ayaan ki pitai main bhi karunga aaj! 🐕",
+            "Biba (Right): Cramps bhagane ke liye ek bark kafi hai! Bhow! 🔊",
+            "Biba (Right): Come here, let me give you a fluffy hug! 🤎"
+        ];
+
         function petDogs(e) {
-            document.getElementById('dogMsg').textContent = dogLines[Math.floor(Math.random() * dogLines.length)];
+            const rect = e.target.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            const dogMsg = document.getElementById('dogMsg');
+            
+            // Haptic Feedback
             if (navigator.vibrate) navigator.vibrate([20, 30, 20]);
+
+            if (clickX < (width / 2)) {
+                // Clicked Left Side (Bella)
+                dogMsg.style.color = '#ff9a9e';
+                dogMsg.textContent = bellaLines[Math.floor(Math.random() * bellaLines.length)];
+            } else {
+                // Clicked Right Side (Biba)
+                dogMsg.style.color = '#d4a373';
+                dogMsg.textContent = bibaLines[Math.floor(Math.random() * bibaLines.length)];
+            }
         }
 
-        // --- ADVANCED RAGE ROOM LOGIC ---
+        // --- 4. RAGE ROOM (30+ MEME DIALOGUES) ---
         let selectedWeapon = "Fist 🥊";
         let weaponClass = "hit-fist";
         let weaponEmoji = "🥊";
@@ -322,39 +354,46 @@
             document.querySelectorAll('.weapon-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             selectedWeapon = weaponName;
-            weaponEmoji = weaponName.split(' ')[1]; // extracts the emoji
+            weaponEmoji = weaponName.split(' ')[1]; 
             
             if(weaponName.includes("Chappal")) weaponClass = "hit-chappal";
             else if(weaponName.includes("Pillow")) weaponClass = "hit-pillow";
             else if(weaponName.includes("Bat")) weaponClass = "hit-bat";
             else weaponClass = "hit-fist";
-
-            document.getElementById('currentWeapon').textContent = `Weapon: ${weaponName}`;
         }
 
-        // Extremely localized & funny dialogues
-        const dialogues = {
-            "Fist 🥊": [
-                "Mukka mat maar, meri naak toot jayegi! 👃",
-                "Arre baap re! Hulk ban gayi kya?! 💪",
-                "Ye pyaar se maara tha ya sach me gussa thi? 😵"
-            ],
-            "Chappal 🩴": [
-                "Mummy ki flying chappal ki yaad dila di! 😭🩴",
-                "Chappal se kon maarta hai apne cute boyfriend ko?!",
-                "Swag se karenge sabka swagat... chappal se?! 💀"
-            ],
-            "Pillow 🛏️": [
-                "Pillow fight me tu hamesha cheating karti hai! 🏳️",
-                "Ah! Ye toh soft tha... aur zor se maar! 😏",
-                "Dimaag mat khao, takiya khao! 🛏️"
-            ],
-            "Bat 🏏": [
-                "Kohli ban rahi hai kya?! Helmet toh pehnne de! 🏏🤕",
-                "Stadium kyu nahi chali jati tu?! 🏟️",
-                "Umpire! Ye out hai, isne foul play kiya hai! 😭"
-            ]
-        };
+        const memeDialogues = [
+            "Galti hamesha ladke ki hi hoti hai, maan liya bhai! 😭",
+            "Aurat ka chakkar babu bhaiya, aurat ka chakkar! 💀",
+            "Ye dhai kilo ka haath jab padta hai na... sach me dard hota hai! 💥",
+            "Ek toh period cramps, upar se tumhara gussa... RIP Ayaan! 🪦",
+            "Didi tera dewar deewana... par pitai meri kyu ho rahi hai?! 😵",
+            "Me: exists. My GF: So you have chosen death. ☠️",
+            "Bhaisaab ye kis line me aa gaye aap? Pitne wali line me! 😭",
+            "Tumhari smile kitni pyari hai... aur maar utni hi bhari! 🥊",
+            "Le me trying to be romantic. Le GF: *Violent mode activated* 🛑",
+            "Thukra ke mera pyaar, mera inteqam dekhegi? Ye kaisa inteqam hai! 😭",
+            "Beta Ayaan, tumse na ho payega. Pitna hi likha hai! 🤧",
+            "Mera babu ne khana khaya? Nahi khaya toh mujhe kyu kha rahi ho! 🦖",
+            "Women empowerment ka ye matlab thodi na hai ki BF ko peeto! 🚩",
+            "Tension lene ka nahi, BF ko dene ka! 🤕",
+            "Jal lijiye... thak gayi hongi mujhe peet kar! 💧",
+            "Maar khao aur muskurate raho, yahi relationship hai! 😂",
+            "Aisa lag raha hai WWE ki ring me utar gaya hu! 🤼‍♀️",
+            "Ruk jaa meri maa, period cramps mujhe ho jayenge! 😵‍💫",
+            "Alexa, play 'Channa Mereya' for my broken bones! 🎶",
+            "Kaun kiske pain me hai? Tu cramps me ya main is maar se?! 🚑",
+            "Sari galti hormones ki hai, meri koi galti nahi! 🧬",
+            "Aapne ghabrana nahi hai... (Par mujhe bohot dar lag raha hai!) 😨",
+            "Ye maar nahi, pyaar hai! (Jo haddi tod raha hai) 🦴",
+            "Khatam! Tata! Bye Bye! Gaya! 💨",
+            "Kya itna bura hu main maa? 🥺",
+            "Ye humari GF hai, ye humari chappal hai, aur yaha meri pitai ho rahi hai! 🥳",
+            "Chhoti bacchi ho kya?! Itna zor se kyu maar rahi ho! 👶",
+            "Hum toh fakir aadmi hain, maar kha ke nikal lenge! 🚶‍♂️",
+            "Suniye, gussa thook dijiye, aur mujhe chhod dijiye! 🙏",
+            "Ouch! Babuuu main tera babu hu, Godzilla nahi! 🦖"
+        ];
 
         const impactTexts = {
             "Fist 🥊": ["DISHUM!", "THUD!", "POW!"],
@@ -365,10 +404,7 @@
 
         function handleHit(e) {
             totalHits++;
-            document.getElementById('hitCounter').textContent = `Total Hits: ${totalHits}`;
-
             const avatar = document.getElementById('ayaanAvatar');
-            const arena = document.getElementById('punchArena');
             const rect = avatar.getBoundingClientRect();
             const clickX = e.clientX - rect.left;
             const clickY = e.clientY - rect.top;
@@ -381,16 +417,16 @@
             void avatar.offsetWidth; 
             avatar.classList.add(weaponClass);
 
-            // 2. Spawn the Weapon Emoji Strike Visualizer
+            // 2. Spawn the Weapon Emoji
             const strike = document.createElement('div');
             strike.className = 'strike-emoji';
             strike.innerText = weaponEmoji;
-            strike.style.left = `${clickX - 20}px`; // Centering offset
-            strike.style.top = `${clickY - 20}px`;
+            strike.style.left = `${clickX - 25}px`; 
+            strike.style.top = `${clickY - 25}px`;
             avatar.appendChild(strike);
-            setTimeout(() => strike.remove(), 500); // Cleanup
+            setTimeout(() => strike.remove(), 500);
 
-            // 3. Comic Impact Text (BAM, POW, CHHAAP)
+            // 3. Comic Impact Text
             const popup = document.getElementById('hitPopup');
             const soundList = impactTexts[selectedWeapon] || ["BAM!"];
             popup.innerText = soundList[Math.floor(Math.random() * soundList.length)];
@@ -412,12 +448,11 @@
                 if(currentOp < 0.9) bruise.style.background = `rgba(123, 44, 191, ${currentOp + 0.3})`;
             }
 
-            // 5. Update Dialogues based on active weapon
-            const diagList = dialogues[selectedWeapon] || dialogues["Fist 🥊"];
-            document.getElementById('ayaanDialogue').innerText = diagList[Math.floor(Math.random() * diagList.length)];
+            // 5. Random 30+ Meme Dialogues
+            document.getElementById('ayaanDialogue').innerText = memeDialogues[Math.floor(Math.random() * memeDialogues.length)];
         }
 
-        // --- SOS PROTOCOL ---
+        // --- 5. SOS PROTOCOL ---
         const selectedCravings = new Set();
         function toggleSOS(btn) {
             const item = btn.innerText;
@@ -435,15 +470,14 @@
                 alert("Koi ek order to select karlo pehle! 🥺");
                 return;
             }
-            const painLevel = document.getElementById('crampSlider').value;
             const items = Array.from(selectedCravings).join(", ");
             const phone = "916398038550";
             
-            // Comprehensive, personalized message
-            const message = `🚨 *NATASHA'S CARE ORDER* 🚨\n\nHey Ayaan, my period cramps are at *Level ${painLevel}/10* right now. 😭\n\nI just beat up your virtual cartoon *${totalHits} times* mostly using a *${selectedWeapon}*.\n\nNow I need you to execute the following order immediately:\n👉 *${items}*\n\nDon't make me wait! ❤️`;
+            const message = `🚨 *NATASHA'S HEALING ORDER* 🚨\n\nHey Ayaan! Period cramps are killing me. 😭\n\nI just punished your virtual cartoon *${totalHits} times* using a *${selectedWeapon}*.\n\nNow come fix me immediately with:\n👉 *${items}*\n\nDon't make me wait! ❤️`;
             
             window.location.href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
         }
     </script>
 </body>
 </html>
+
