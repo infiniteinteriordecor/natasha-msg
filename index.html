@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="robots" content="noindex, nofollow">
-    <title>Date Invitation</title>
+    <title>Date Invitation for Natasha</title>
     <style>
         :root {
             --bg-color: #0f0f13;
@@ -117,12 +117,11 @@
             color: var(--text-main);
             flex: 1;
             max-width: 150px;
-            position: relative; /* Allows translation without breaking document flow initially */
+            position: relative;
             transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             z-index: 10;
         }
 
-        /* Form Inputs */
         .input-group {
             width: 100%;
             margin-bottom: 20px;
@@ -149,7 +148,6 @@
             -webkit-appearance: none;
         }
 
-        /* Grid for venue selection */
         .grid-2x2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -197,7 +195,8 @@
         
         <!-- STEP 1: The Ask -->
         <div class="view active" id="view-ask">
-            <h2>Date Night?</h2>
+            <!-- INJECTED NATASHA'S NAME HERE -->
+            <h2>Hey Natasha ❤️</h2>
             <p class="subtitle">I was wondering... would you like to go on a date with me?</p>
             <div class="btn-container">
                 <button class="btn btn-yes" onclick="navigate('view-datetime')">Yes!</button>
@@ -245,7 +244,8 @@
 
         <!-- STEP 4: WhatsApp Payload Execution -->
         <div class="view" id="view-final">
-            <h2>It's a Date! 🎉</h2>
+            <!-- INJECTED NATASHA'S NAME HERE -->
+            <h2>It's a Date, Natasha! 🎉</h2>
             <p class="subtitle">Your reservation has been confirmed locally. Transmit the data to your boyfriend to finalize.</p>
             <button class="action-btn" onclick="sendToWhatsApp()">Notify on WhatsApp 📲</button>
         </div>
@@ -255,14 +255,12 @@
     <script>
         'use strict';
 
-        // Global State Memory
         const dateData = {
             date: '',
             time: '',
             vibe: ''
         };
 
-        // DOM Router Core
         function navigate(targetId) {
             document.querySelectorAll('.view').forEach(view => {
                 view.classList.remove('active');
@@ -270,37 +268,26 @@
             document.getElementById(targetId).classList.add('active');
         }
 
-        // ==========================================
-        // EVASIVE BUTTON LOGIC (Devil's Advocate Protocol)
-        // ==========================================
         const btnNo = document.getElementById('btn-no');
         const boundary = document.getElementById('boundary');
 
         function moveButton(e) {
-            // Prevent actual click/tap execution
             if(e) e.preventDefault(); 
             
-            // Calculate safe bounding boxes to keep button visible
             const maxOffsetX = 100; 
             const maxOffsetY = 150; 
 
-            // Generate random translation values
             const randomX = (Math.random() * (maxOffsetX * 2)) - maxOffsetX;
             const randomY = (Math.random() * (maxOffsetY * 2)) - maxOffsetY;
 
-            // Apply hardware-accelerated transformation
             btnNo.style.transform = `translate(${randomX}px, ${randomY}px)`;
         }
 
-        // Listen for desktop hover and mobile touch
         btnNo.addEventListener('mouseover', moveButton);
         btnNo.addEventListener('touchstart', moveButton, { passive: false });
-        btnNo.addEventListener('click', moveButton); // Fallback
+        btnNo.addEventListener('click', moveButton); 
 
 
-        // ==========================================
-        // DATA VALIDATION & PIPELINE
-        // ==========================================
         function validateDateTime() {
             const d = document.getElementById('dateInput').value;
             const t = document.getElementById('timeInput').value;
@@ -310,7 +297,6 @@
                 return;
             }
             
-            // Format Date (Optional string manipulation for better readability)
             const dateObj = new Date(d);
             const formattedDate = dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
@@ -325,23 +311,17 @@
             navigate('view-final');
         }
 
-        // ==========================================
-        // WHATSAPP API EXECUTION
-        // ==========================================
         function sendToWhatsApp() {
             const targetPhone = "916398038550"; 
             
-            // Construct the final payload string
-            const message = `Hey babe! It's a YES for the date! ❤️\n\n📅 Date: *${dateData.date}*\n⏰ Time: *${dateData.time}*\n📍 Vibe: *${dateData.vibe}*\n\nCan't wait! 😘`;
+            // INJECTED NATASHA'S NAME INTO THE PAYLOAD
+            const message = `Hey babe! It's Natasha, and it's a YES for the date! ❤️\n\n📅 Date: *${dateData.date}*\n⏰ Time: *${dateData.time}*\n📍 Vibe: *${dateData.vibe}*\n\nCan't wait! 😘`;
             
-            // URI Encode to handle spaces and newlines natively
             const encodedMessage = encodeURIComponent(message);
             const waUrl = `https://wa.me/${targetPhone}?text=${encodedMessage}`;
             
-            // Execute redirect
             window.location.href = waUrl;
         }
     </script>
 </body>
 </html>
-
