@@ -32,20 +32,6 @@
             transition: background 0.8s ease;
         }
 
-        /* --- Welcome Overlay (Required for Audio Policy) --- */
-        #welcomeOverlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 0.5s ease;
-        }
-        .tap-btn {
-            background: var(--primary); color: white; padding: 20px 40px; border-radius: 30px;
-            font-size: 20px; font-weight: bold; border: none; box-shadow: 0 10px 30px rgba(255, 77, 109, 0.4);
-            cursor: pointer; animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.05);} 100% {transform: scale(1);} }
-
         /* --- Modern Glassmorphism UI --- */
         .header { text-align: center; margin: 20px 0 25px 0; }
         .header h1 { font-size: 28px; color: var(--text-main); font-weight: 800; letter-spacing: -0.5px;}
@@ -147,19 +133,12 @@
 </head>
 <body>
 
-    <!-- AUDIO POLICY OVERLAY -->
-    <div id="welcomeOverlay">
-        <h1 style="color: var(--primary); margin-bottom: 20px; text-align: center;">Hey Natasha 🌸</h1>
-        <p style="margin-bottom: 30px; font-weight: 500; color: #555;">Turn on your volume.</p>
-        <button class="tap-btn" onclick="startExperience()">Tap to Open ✨</button>
-    </div>
-
     <div class="header" id="mainHeader">
         <h1>Your Safe Space 🌸</h1>
         <p>Because you deserve to be pampered.</p>
     </div>
 
-    <!-- MODULE 1: BALLOON GULDASTA (REPLACES BUBBLE WRAP) -->
+    <!-- MODULE 1: BALLOON GULDASTA -->
     <div class="card">
         <h2>🎈 Stress Release Balloons</h2>
         <p style="font-size: 13px; color: var(--text-muted);">Pop them to release the tension.</p>
@@ -227,35 +206,7 @@
     <script>
         'use strict';
 
-        // --- 1. AUDIO & INITIALIZATION ENGINE ---
-        function startExperience() {
-            const overlay = document.getElementById('welcomeOverlay');
-            overlay.style.opacity = '0';
-            setTimeout(() => overlay.style.display = 'none', 500);
-
-            // Programmatic Text-to-Speech (Zero External Files needed)
-            const synth = window.speechSynthesis;
-            
-            // Generate Dog Barks
-            const bark = new SpeechSynthesisUtterance("Bhow. Bhow.");
-            bark.pitch = 2.0; 
-            bark.rate = 1.5;
-            
-            // Generate Voice Note
-            const voiceNote = new SpeechSynthesisUtterance("Good morning Natasha. I love you baby.");
-            voiceNote.pitch = 0.9; // Deep romantic tone
-            voiceNote.rate = 0.85; // Slow and comforting
-            
-            // Try to find a male English voice if available in browser
-            let voices = synth.getVoices();
-            let selectedVoice = voices.find(v => v.lang.includes('en') && (v.name.includes('Male') || v.name.includes('Google UK English Male')));
-            if(selectedVoice) voiceNote.voice = selectedVoice;
-
-            synth.speak(bark);
-            setTimeout(() => synth.speak(voiceNote), 1200);
-        }
-
-        // --- 2. 3D BALLOON GULDASTA LOGIC ---
+        // --- 1. 3D BALLOON GULDASTA LOGIC ---
         const comfortWords = ["Relax ✨", "Breathe 🌬️", "You're Cute 🥺", "Smile 🌸", "Let it go 🍃", "Beautiful ❤️", "Calm Down 🧘‍♀️"];
         const balloonGradients = [
             "radial-gradient(circle at 30% 30%, #ff9a9e, #fecfef)",
@@ -309,7 +260,7 @@
         }
         initBalloons(); // Run on load
 
-        // --- 3. DOG THERAPY (LEFT VS RIGHT TRACKING) ---
+        // --- 2. DOG THERAPY (LEFT VS RIGHT TRACKING) ---
         const bellaLines = [
             "Bella (Left): Main white hu, aur tumhara dil bhi saaf hai! 🤍",
             "Bella (Left): Tension mat lo, main hu na! 🎀",
@@ -344,7 +295,7 @@
             }
         }
 
-        // --- 4. RAGE ROOM (30+ MEME DIALOGUES) ---
+        // --- 3. RAGE ROOM (30+ MEME DIALOGUES) ---
         let selectedWeapon = "Fist 🥊";
         let weaponClass = "hit-fist";
         let weaponEmoji = "🥊";
@@ -452,7 +403,7 @@
             document.getElementById('ayaanDialogue').innerText = memeDialogues[Math.floor(Math.random() * memeDialogues.length)];
         }
 
-        // --- 5. SOS PROTOCOL ---
+        // --- 4. SOS PROTOCOL ---
         const selectedCravings = new Set();
         function toggleSOS(btn) {
             const item = btn.innerText;
